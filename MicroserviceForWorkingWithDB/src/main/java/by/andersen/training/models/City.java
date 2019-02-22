@@ -8,17 +8,17 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "roles")
-public class Role {
+@Table(name = "cities")
+public class City {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "role_name", length = 60, nullable = false)
-    private String roleName;
+    @Column(name = "city_name",length = 200, nullable = false)
+    private String cityName;
 
-    public Role() {
+    public City() {
     }
 
     public Long getId() {
@@ -29,11 +29,11 @@ public class Role {
         this.id = id;
     }
 
-    public String getRoleName() {
-        return roleName;
+    public String getCityName() {
+        return cityName;
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 }

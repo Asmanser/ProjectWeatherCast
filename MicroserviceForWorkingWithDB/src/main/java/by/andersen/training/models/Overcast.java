@@ -8,17 +8,18 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "roles")
-public class Role {
+@Table(name = "overcast")
+public class Overcast {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "role_name", length = 60, nullable = false)
-    private String roleName;
+    @Column(name = "name_overcast", length = 50, nullable = false)
+    private String nameOvercast;
 
-    public Role() {
+    public Overcast(String nameOvercast) {
+        this.nameOvercast = nameOvercast;
     }
 
     public Long getId() {
@@ -29,11 +30,11 @@ public class Role {
         this.id = id;
     }
 
-    public String getRoleName() {
-        return roleName;
+    public String getNameOvercast() {
+        return nameOvercast;
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public void setNameOvercast(String nameOvercast) {
+        this.nameOvercast = nameOvercast;
     }
 }

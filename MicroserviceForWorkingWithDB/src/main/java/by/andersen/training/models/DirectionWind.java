@@ -8,17 +8,17 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "roles")
-public class Role {
+@Table(name = "direction_wind")
+public class DirectionWind {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "role_name", length = 60, nullable = false)
-    private String roleName;
+    @Column(length = 50,nullable = false)
+    private String direction;
 
-    public Role() {
+    public DirectionWind() {
     }
 
     public Long getId() {
@@ -29,11 +29,11 @@ public class Role {
         this.id = id;
     }
 
-    public String getRoleName() {
-        return roleName;
+    public String getDirection() {
+        return direction;
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 }
