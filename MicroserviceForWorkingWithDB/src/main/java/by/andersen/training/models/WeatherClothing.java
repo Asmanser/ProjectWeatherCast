@@ -1,10 +1,16 @@
 package by.andersen.training.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(name = "weather_clothing")
@@ -14,15 +20,28 @@ public class WeatherClothing {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="id_outerwear")
     private OuterWear outerWear;
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="id_underwear")
     private UnderWear underWear;
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="id_footwear")
     private FootWear footWear;
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="id_caps")
     private Cap cap;
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="id_accessories")
     private Accessory accessory;
+
+    @OneToMany(mappedBy="weatherClothing", fetch=FetchType.EAGER)
+    private List<WeatherInformation> weatherInformations;
 
     public WeatherClothing() {
     }
@@ -73,5 +92,13 @@ public class WeatherClothing {
 
     public void setAccessory(Accessory accessory) {
         this.accessory = accessory;
+    }
+
+    public List<WeatherInformation> getWeatherInformations() {
+        return weatherInformations;
+    }
+
+    public void setWeatherInformations(List<WeatherInformation> weatherInformations) {
+        this.weatherInformations = weatherInformations;
     }
 }

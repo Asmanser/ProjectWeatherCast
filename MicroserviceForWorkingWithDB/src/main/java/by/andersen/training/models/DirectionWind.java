@@ -2,10 +2,13 @@ package by.andersen.training.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(name = "direction_wind")
@@ -17,6 +20,9 @@ public class DirectionWind {
 
     @Column(length = 50,nullable = false)
     private String direction;
+
+    @OneToMany(mappedBy="directionWind", fetch = FetchType.LAZY)
+    private List<WeatherInformation> weatherInformations;
 
     public DirectionWind() {
     }
@@ -35,5 +41,13 @@ public class DirectionWind {
 
     public void setDirection(String direction) {
         this.direction = direction;
+    }
+
+    public List<WeatherInformation> getWeatherInformations() {
+        return weatherInformations;
+    }
+
+    public void setWeatherInformations(List<WeatherInformation> weatherInformations) {
+        this.weatherInformations = weatherInformations;
     }
 }

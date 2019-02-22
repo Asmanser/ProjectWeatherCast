@@ -1,10 +1,14 @@
 package by.andersen.training.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.sql.Date;
 
@@ -34,14 +38,24 @@ public class WeatherInformation {
     @Column(name = "date", nullable = false)
     private Date date;
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="id_city")
     private City city;
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="id_direction_wind")
     private DirectionWind directionWind;
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="id_overcast")
     private Overcast overcast;
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="id_weather_condition")
     private WeatherCondition weatherCondition;
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="id_weather_clothing")
     private WeatherClothing weatherClothing;
 
     public WeatherInformation() {
@@ -142,4 +156,5 @@ public class WeatherInformation {
     public void setWeatherClothing(WeatherClothing weatherClothing) {
         this.weatherClothing = weatherClothing;
     }
+        
 }

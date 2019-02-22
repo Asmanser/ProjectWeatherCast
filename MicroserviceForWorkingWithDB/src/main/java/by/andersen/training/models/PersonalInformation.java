@@ -1,10 +1,15 @@
 package by.andersen.training.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -29,6 +34,13 @@ public class PersonalInformation {
 
     @Column(length = 100, nullable = false)
     private String email;
+
+    @OneToOne(mappedBy="personalInformation", fetch = FetchType.LAZY)
+    private User user;
+
+    @ManyToOne(cascade= CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="id_city")
+    private City city;
 
     public PersonalInformation() {
     }
@@ -79,5 +91,21 @@ public class PersonalInformation {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 }
