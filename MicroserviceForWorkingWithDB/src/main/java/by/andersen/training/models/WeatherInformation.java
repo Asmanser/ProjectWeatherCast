@@ -156,5 +156,5 @@ public class WeatherInformation {
     public void setWeatherClothing(WeatherClothing weatherClothing) {
         this.weatherClothing = weatherClothing;
     }
-        
+
 }
