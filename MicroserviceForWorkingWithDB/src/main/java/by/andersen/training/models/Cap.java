@@ -8,17 +8,17 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "accessories")
-public class Accessory {
+@Table(name = "caps")
+public class Cap {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name_accessory", length = 60, nullable = false)
-    private String nameAccessory;
+    @Column(name = "name_cap", length = 60, nullable = false)
+    private String nameCap;
 
-    public Accessory() {
+    public Cap() {
     }
 
     public Long getId() {
@@ -29,11 +29,11 @@ public class Accessory {
         this.id = id;
     }
 
-    public String getNameAccessory() {
-        return nameAccessory;
+    public String getNameCap() {
+        return nameCap;
     }
 
-    public void setNameAccessory(String nameAccessory) {
-        this.nameAccessory = nameAccessory;
+    public void setNameCap(String nameCap) {
+        this.nameCap = nameCap;
     }
 }

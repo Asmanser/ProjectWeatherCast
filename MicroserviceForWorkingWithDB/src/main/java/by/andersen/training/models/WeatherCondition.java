@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "weather_condition")
-public class WeatherConditions {
+public class WeatherCondition {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +18,7 @@ public class WeatherConditions {
     @Column(name = "name_weather_conditions", length = 50, nullable = false)
     private String nameWeatherConditions;
 
-    public WeatherConditions() {
+    public WeatherCondition() {
     }
 
     public Long getId() {
