@@ -32,7 +32,7 @@ public class User {
     @JoinColumn(name = "pi_id")
     private PersonalInformation personalInformation;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name="users_roles",
             joinColumns=@JoinColumn (name="id_users"),
             inverseJoinColumns=@JoinColumn(name="id_roles"))

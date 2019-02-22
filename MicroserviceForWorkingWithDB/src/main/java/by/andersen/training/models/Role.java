@@ -1,5 +1,6 @@
 package by.andersen.training.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,7 +24,7 @@ public class Role {
     @Column(name = "role_name", length = 60, nullable = false)
     private String roleName;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name="users_roles",
             joinColumns=@JoinColumn(name="id_roles"),
             inverseJoinColumns=@JoinColumn(name="id_users"))

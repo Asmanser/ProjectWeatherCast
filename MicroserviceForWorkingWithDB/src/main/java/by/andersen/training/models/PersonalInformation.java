@@ -35,9 +35,6 @@ public class PersonalInformation {
     @Column(length = 100, nullable = false)
     private String email;
 
-    @OneToOne(mappedBy="personalInformation", fetch = FetchType.LAZY)
-    private User user;
-
     @ManyToOne(cascade= CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="id_city")
     private City city;
@@ -91,14 +88,6 @@ public class PersonalInformation {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public City getCity() {

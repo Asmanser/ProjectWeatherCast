@@ -37,7 +37,7 @@ public class AppConfig {
         Properties jpaProperties = new Properties();
         jpaProperties.setProperty("hibernate.dialect","org.hibernate.dialect.MySQL5Dialect");
         jpaProperties.setProperty("show_sql","true");
-        jpaProperties.setProperty("hbm2ddl.auto","create-drop");
+        //jpaProperties.setProperty("hbm2ddl.auto","create-drop");
         factoryBean.setJpaProperties(jpaProperties);
         factoryBean.setPackagesToScan("by.andersen.training");
         return factoryBean;
