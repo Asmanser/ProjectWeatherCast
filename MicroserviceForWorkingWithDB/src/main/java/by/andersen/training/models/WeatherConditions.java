@@ -8,17 +8,17 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "overcast")
-public class Overcast {
+@Table(name = "weather_condition")
+public class WeatherConditions {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name_overcast", length = 50, nullable = false)
-    private String nameOvercast;
+    @Column(name = "name_weather_conditions", length = 50, nullable = false)
+    private String nameWeatherConditions;
 
-    public Overcast() {
+    public WeatherConditions() {
     }
 
     public Long getId() {
@@ -29,11 +29,11 @@ public class Overcast {
         this.id = id;
     }
 
-    public String getNameOvercast() {
-        return nameOvercast;
+    public String getNameWeatherConditions() {
+        return nameWeatherConditions;
     }
 
-    public void setNameOvercast(String nameOvercast) {
-        this.nameOvercast = nameOvercast;
+    public void setNameWeatherConditions(String nameWeatherConditions) {
+        this.nameWeatherConditions = nameWeatherConditions;
     }
 }
