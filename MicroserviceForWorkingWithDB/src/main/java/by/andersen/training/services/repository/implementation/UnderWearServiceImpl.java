@@ -4,10 +4,12 @@ import by.andersen.training.models.UnderWear;
 import by.andersen.training.repositories.UnderWearRepository;
 import by.andersen.training.services.repository.interfaces.UnderWearService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class UnderWearServiceImpl implements UnderWearService {
 
     @Autowired
@@ -62,4 +64,17 @@ public class UnderWearServiceImpl implements UnderWearService {
         underWearRepository.deleteAll();
     }
 
+    @Override
+    public Iterable<UnderWear> findWithAllLazyAll() {
+        List<UnderWear> footWears = new ArrayList<>();
+        for(UnderWear footWear : underWearRepository.findWithAllLazyAll()) {
+            footWears.add(footWear);
+        }
+        return footWears;
+    }
+
+    @Override
+    public UnderWear findWithAllLazyById(Long id) {
+        return underWearRepository.findWithAllLazyById(id).get();
+    }
 }

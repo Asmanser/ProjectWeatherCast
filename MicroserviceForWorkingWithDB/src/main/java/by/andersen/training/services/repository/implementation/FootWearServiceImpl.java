@@ -4,10 +4,12 @@ import by.andersen.training.models.FootWear;
 import by.andersen.training.repositories.FootWearRepository;
 import by.andersen.training.services.repository.interfaces.FootWearService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class FootWearServiceImpl implements FootWearService {
 
     @Autowired
@@ -60,5 +62,19 @@ public class FootWearServiceImpl implements FootWearService {
     @Override
     public void deleteAll() {
         footWearRepository.deleteAll();
+    }
+
+    @Override
+    public Iterable<FootWear> findWithAllLazyAll() {
+        List<FootWear> footWears = new ArrayList<>();
+        for(FootWear footWear : footWearRepository.findWithAllLazyAll()) {
+            footWears.add(footWear);
+        }
+        return footWears;
+    }
+
+    @Override
+    public FootWear findWithAllLazyById(Long id) {
+        return footWearRepository.findWithAllLazyById(id).get();
     }
 }

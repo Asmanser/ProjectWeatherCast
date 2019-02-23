@@ -4,10 +4,12 @@ import by.andersen.training.models.PersonalInformation;
 import by.andersen.training.repositories.PersonalInformationRepository;
 import by.andersen.training.services.repository.interfaces.PersonalInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class PersonalInformationServiceImpl implements PersonalInformationService {
 
     @Autowired
@@ -62,4 +64,18 @@ public class PersonalInformationServiceImpl implements PersonalInformationServic
         personalInformationRepository.deleteAll();
     }
 
+
+    @Override
+    public Iterable<PersonalInformation> findWithAllLazyAll() {
+        List<PersonalInformation> footWears = new ArrayList<>();
+        for(PersonalInformation footWear : personalInformationRepository.findWithAllLazyAll()) {
+            footWears.add(footWear);
+        }
+        return footWears;
+    }
+
+    @Override
+    public PersonalInformation findWithAllLazyById(Long id) {
+        return personalInformationRepository.findWithAllLazyById(id).get();
+    }
 }

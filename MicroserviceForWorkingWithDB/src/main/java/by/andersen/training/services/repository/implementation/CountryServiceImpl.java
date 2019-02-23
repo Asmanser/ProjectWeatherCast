@@ -4,10 +4,12 @@ import by.andersen.training.models.Country;
 import by.andersen.training.repositories.CountryRepository;
 import by.andersen.training.services.repository.interfaces.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class CountryServiceImpl implements CountryService {
 
     @Autowired

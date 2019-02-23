@@ -4,10 +4,12 @@ import by.andersen.training.models.WeatherClothing;
 import by.andersen.training.repositories.WeatherClothingRepository;
 import by.andersen.training.services.repository.interfaces.WeatherClothingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class WeatherClothingServiceImpl implements WeatherClothingService {
 
     @Autowired
@@ -62,4 +64,17 @@ public class WeatherClothingServiceImpl implements WeatherClothingService {
         weatherClothingRepository.deleteAll();
     }
 
+    @Override
+    public WeatherClothing findWithAllLazyById(Long aLong) {
+        return weatherClothingRepository.findWithAllLazyById(aLong);
+    }
+
+    @Override
+    public Iterable<WeatherClothing> findWithAllLazyAll() {
+        List<WeatherClothing> footWears = new ArrayList<>();
+        for(WeatherClothing footWear : weatherClothingRepository.findWithAllLazyAll()) {
+            footWears.add(footWear);
+        }
+        return footWears;
+    }
 }

@@ -4,10 +4,12 @@ import by.andersen.training.models.Accessory;
 import by.andersen.training.repositories.AccessoryRepository;
 import by.andersen.training.services.repository.interfaces.AccessoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class AccessoryServiceImpl implements AccessoryService {
 
     @Autowired
@@ -61,5 +63,20 @@ public class AccessoryServiceImpl implements AccessoryService {
     @Override
     public void deleteAll() {
         accessoryRepository.deleteAll();
+    }
+
+    @Override
+    public Iterable<Accessory> findWithAllLazyAll() {
+        List<Accessory> accessories = new ArrayList<>();
+        Iterable<Accessory> all = accessoryRepository.findWithAllLazyAll();
+        for(Accessory accessory : all) {
+            accessories.add(accessory);
+        }
+        return accessories;
+    }
+
+    @Override
+    public Accessory findWithAllLazyById(Long id) {
+        return accessoryRepository.findWithAllLazyById(id).get();
     }
 }

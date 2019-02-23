@@ -4,10 +4,12 @@ import by.andersen.training.models.DirectionWind;
 import by.andersen.training.repositories.DirectionWindRepository;
 import by.andersen.training.services.repository.interfaces.DirectionWindService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class DirectionWindServiceImpl implements DirectionWindService {
 
     @Autowired

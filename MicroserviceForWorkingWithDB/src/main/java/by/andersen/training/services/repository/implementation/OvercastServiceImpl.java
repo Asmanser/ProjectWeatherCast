@@ -4,10 +4,12 @@ import by.andersen.training.models.Overcast;
 import by.andersen.training.repositories.OvercastRepository;
 import by.andersen.training.services.repository.interfaces.OvercastService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class OvercastServiceImpl implements OvercastService {
 
     @Autowired
@@ -62,4 +64,17 @@ public class OvercastServiceImpl implements OvercastService {
         overcastRepository.deleteAll();
     }
 
+    @Override
+    public Iterable<Overcast> findWithAllLazyAll() {
+        List<Overcast> footWears = new ArrayList<>();
+        for(Overcast footWear : overcastRepository.findWithAllLazyAll()) {
+            footWears.add(footWear);
+        }
+        return footWears;
+    }
+
+    @Override
+    public Overcast findWithAllLazyById(Long id) {
+        return overcastRepository.findWithAllLazyById(id).get();
+    }
 }

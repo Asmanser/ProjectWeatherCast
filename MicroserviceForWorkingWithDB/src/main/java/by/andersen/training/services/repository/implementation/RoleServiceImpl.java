@@ -4,10 +4,12 @@ import by.andersen.training.models.Role;
 import by.andersen.training.repositories.RoleRepository;
 import by.andersen.training.services.repository.interfaces.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class RoleServiceImpl implements RoleService {
 
     @Autowired

@@ -4,10 +4,13 @@ import by.andersen.training.models.City;
 import by.andersen.training.repositories.CityRepository;
 import by.andersen.training.services.repository.interfaces.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class CityServiceImpl implements CityService {
 
     @Autowired
@@ -24,6 +27,7 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
+    @Transactional
     public City findById(Long id) {
         return cityRepository.findById(id).get();
     }
@@ -60,5 +64,19 @@ public class CityServiceImpl implements CityService {
     @Override
     public void deleteAll() {
         cityRepository.deleteAll();
+    }
+
+    @Override
+    public Iterable<City> findWithAllLazyAll() {
+        List<City> cities = new ArrayList<>();
+        for(City city : cityRepository.findWithAllLazyAll()) {
+            cities.add(city);
+        }
+        return cities;
+    }
+
+    @Override
+    public City findWithAllLazyById(Long id) {
+        return cityRepository.findWithCountryById(id).get();
     }
 }

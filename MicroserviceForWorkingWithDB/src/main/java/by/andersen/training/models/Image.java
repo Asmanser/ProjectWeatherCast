@@ -23,27 +23,6 @@ public class Image {
     @Column(name = "path_image", length = 500, nullable = false)
     private String pathImage;
 
-    @OneToOne(mappedBy="image", fetch = FetchType.LAZY)
-    private Overcast overcast;
-
-    @OneToOne(mappedBy="image", fetch = FetchType.LAZY)
-    private WeatherCondition weatherCondition;
-
-    @OneToOne(mappedBy="image", fetch = FetchType.LAZY)
-    private FootWear footWear;
-
-    @OneToOne(mappedBy="image", fetch = FetchType.LAZY)
-    private Accessory accessory;
-
-    @OneToOne(mappedBy="image", fetch = FetchType.LAZY)
-    private UnderWear underWear;
-
-    @OneToOne(mappedBy="image", fetch = FetchType.LAZY)
-    private OuterWear outerWear;
-
-    @OneToOne(mappedBy="image", fetch = FetchType.LAZY)
-    private Cap cap;
-
     public Image() {
     }
 
@@ -69,61 +48,5 @@ public class Image {
 
     public void setPathImage(String pathImage) {
         this.pathImage = pathImage;
-    }
-
-    public Overcast getOvercast() {
-        return overcast;
-    }
-
-    public void setOvercast(Overcast overcast) {
-        this.overcast = overcast;
-    }
-
-    public WeatherCondition getWeatherCondition() {
-        return weatherCondition;
-    }
-
-    public void setWeatherCondition(WeatherCondition weatherCondition) {
-        this.weatherCondition = weatherCondition;
-    }
-
-    public FootWear getFootWear() {
-        return footWear;
-    }
-
-    public void setFootWear(FootWear footWear) {
-        this.footWear = footWear;
-    }
-
-    public Accessory getAccessory() {
-        return accessory;
-    }
-
-    public void setAccessory(Accessory accessory) {
-        this.accessory = accessory;
-    }
-
-    public UnderWear getUnderWear() {
-        return underWear;
-    }
-
-    public void setUnderWear(UnderWear underWear) {
-        this.underWear = underWear;
-    }
-
-    public OuterWear getOuterWear() {
-        return outerWear;
-    }
-
-    public void setOuterWear(OuterWear outerWear) {
-        this.outerWear = outerWear;
-    }
-
-    public Cap getCap() {
-        return cap;
-    }
-
-    public void setCap(Cap cap) {
-        this.cap = cap;
     }
 }

@@ -4,10 +4,12 @@ import by.andersen.training.models.Image;
 import by.andersen.training.repositories.ImageRepository;
 import by.andersen.training.services.repository.interfaces.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class ImageServiceImpl implements ImageService {
 
     @Autowired

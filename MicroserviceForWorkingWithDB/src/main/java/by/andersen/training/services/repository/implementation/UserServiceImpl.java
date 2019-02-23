@@ -6,6 +6,7 @@ import by.andersen.training.services.repository.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
+    @Transactional
     public void save(User user) {
         userRepository.save(user);
     }
@@ -63,5 +65,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteAll() {
         userRepository.deleteAll();
+    }
+
+    @Override
+    public Iterable<User> findWithAllLazyAll() {
+        List<User> users = new ArrayList<>();
+        Iterable<User> itr = userRepository.findWithAllLazyAll();
+        for(User user : itr) {
+            users.add(user);
+        }
+        return users;
+    }
+
+    @Override
+    public User findWithAllLazyById(Long id) {
+        return userRepository.findWithAllLazyById(id).get();
     }
 }

@@ -4,10 +4,12 @@ import by.andersen.training.models.OuterWear;
 import by.andersen.training.repositories.OuterWearRepository;
 import by.andersen.training.services.repository.interfaces.OuterWearService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class OuterWearServiceImpl implements OuterWearService {
 
     @Autowired
@@ -62,4 +64,17 @@ public class OuterWearServiceImpl implements OuterWearService {
         outerWearRepository.deleteAll();
     }
 
+    @Override
+    public Iterable<OuterWear> findWithAllLazyAll() {
+        List<OuterWear> footWears = new ArrayList<>();
+        for(OuterWear footWear : outerWearRepository.findWithAllLazyAll()) {
+            footWears.add(footWear);
+        }
+        return footWears;
+    }
+
+    @Override
+    public OuterWear findWithAllLazyById(Long id) {
+        return outerWearRepository.findWithAllLazyById(id).get();
+    }
 }

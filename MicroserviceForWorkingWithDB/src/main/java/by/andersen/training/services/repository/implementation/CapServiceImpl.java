@@ -4,10 +4,12 @@ import by.andersen.training.models.Cap;
 import by.andersen.training.repositories.CapRepository;
 import by.andersen.training.services.repository.interfaces.CapService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class CapServiceImpl implements CapService {
 
     @Autowired
@@ -61,4 +63,19 @@ public class CapServiceImpl implements CapService {
     public void deleteAll() {
         capRepository.deleteAll();
     }
+
+    @Override
+    public Iterable<Cap> findWithAllLazyAll() {
+        List<Cap> caps = new ArrayList<>();
+        for(Cap cap : capRepository.findWithAllLazyAll()) {
+            caps.add(cap);
+        }
+        return caps;
+    }
+
+    @Override
+    public Cap findWithAllLazyById(Long id) {
+        return capRepository.findWithAllLazyById(id).get();
+    }
+
 }
