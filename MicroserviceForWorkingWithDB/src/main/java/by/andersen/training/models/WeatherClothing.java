@@ -20,27 +20,27 @@ public class WeatherClothing {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id_outerwear")
     private OuterWear outerWear;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id_underwear")
     private UnderWear underWear;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id_footwear")
     private FootWear footWear;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id_caps")
     private Cap cap;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id_accessories")
     private Accessory accessory;
 
-    @OneToMany(mappedBy="weatherClothing", fetch=FetchType.EAGER)
+    @OneToMany(mappedBy="weatherClothing", fetch=FetchType.LAZY)
     private List<WeatherInformation> weatherInformations;
 
     public WeatherClothing() {

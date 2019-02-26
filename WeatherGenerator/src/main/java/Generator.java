@@ -96,26 +96,27 @@ public class Generator implements AutoCloseable{
         while(true) {
             for(City city : this.cities) {
                 WeatherInformation weatherInformation = new WeatherInformation();
-                Random random = new Random();
-                weatherInformation.setMinAirTemperature(random.nextInt(3));
-                weatherInformation.setMaxAirTemperature(random.nextInt(10) + 3);
-                weatherInformation.setWindSpeed(random.nextInt(10));
-                weatherInformation.setAtmospherePressure(random.nextInt(20) + 750);
-                weatherInformation.setAirHumidity(random.nextInt(100));
+                /*Random random = new Random();
+                Random randomTemperature = new Random(-20);*/
+                weatherInformation.setMinAirTemperature((int)(Math.random() * ((50 - (-20)) + 1)));
+                weatherInformation.setMaxAirTemperature(weatherInformation.getMinAirTemperature() + 2);
+                weatherInformation.setWindSpeed((int)(Math.random() * ((10 - 0) + 1)));
+                weatherInformation.setAtmospherePressure((int)(Math.random() * ((770 - 750) + 1)));
+                weatherInformation.setAirHumidity((int)(Math.random() * ((100 - 0) + 1)));
                 weatherInformation.setDate(Date.valueOf(localDate.toString()));
                 weatherInformation.setCity(city);
-                weatherInformation.setDirectionWind(this.directionWinds.get(random.nextInt(this.directionWinds.size()-1)));
-                weatherInformation.setOvercast(this.overcasts.get(random.nextInt(this.overcasts.size() - 1)));
-                weatherInformation.setWeatherCondition(this.weatherConditions.get(this.weatherConditions.size() - 1));
+                weatherInformation.setDirectionWind(this.directionWinds.get((int)(Math.random() * ((this.directionWinds.size()-1) - 0) + 1)));
+                weatherInformation.setOvercast(this.overcasts.get((int)(Math.random() * ((this.overcasts.size()-1) - 0) + 1)));
+                weatherInformation.setWeatherCondition(this.weatherConditions.get((int)(Math.random() * ((this.weatherConditions.size()-1) - 0) + 1)));
                 weatherInformation.setWeatherClothing(null);
                 WeatherInformationRMQ weatherInformationRMQ = new WeatherInformationRMQ("SAVE",weatherInformation);
-                String jsonWeatherInformation = this.call(gson.toJson(weatherInformationRMQ), "weatherInformation");
+                String jsonWeatherInformation = this.call(gson.toJson(weatherInformationRMQ), "weatherInformationHandler");
                 if(!jsonWeatherInformation.equals("true")) {
                     System.out.println("Don't save: " + gson.toJson(weatherInformationRMQ));
                 }
             }
-            Thread.sleep(500000000);
-            localDate.plusDays(1);
+            Thread.sleep(15000);
+            localDate = localDate.plusDays(1);
         }
     }
 

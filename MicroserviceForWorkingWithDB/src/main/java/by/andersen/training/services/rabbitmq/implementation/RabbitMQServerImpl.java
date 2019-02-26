@@ -39,6 +39,21 @@ public class RabbitMQServerImpl implements RabbitMQServer {
     @Autowired
     private WeatherInformationParserJsonAndAnswerRMQ weatherInformationParserJsonAndAnswerRMQ;
 
+    @Autowired
+    private AccessoryParserJsonAndAnswerRMQ accessoryParserJsonAndAnswerRMQ;
+
+    @Autowired
+    private CapParserJsonAndAnswerRMQ capParserJsonAndAnswerRMQ;
+
+    @Autowired
+    private OuterWearParserJsonAndAnswerRMQ outerWearParserJsonAndAnswerRMQ;
+
+    @Autowired
+    private FootWearParserJsonAndAnswerRMQ footWearParserJsonAndAnswerRMQ;
+
+    @Autowired
+    private UnderWearParserJsonAndAnswerRMQ underWearParserJsonAndAnswerRMQ;
+
     @PostConstruct
     private void init() {
         connectionFactory.setHost("localhost");
@@ -65,6 +80,26 @@ public class RabbitMQServerImpl implements RabbitMQServer {
         Runner runnerWeatherInformation = new Runner(connectionFactory,"weatherInformation", weatherInformationParserJsonAndAnswerRMQ);
         Thread threadWeatherInformation = new Thread(runnerWeatherInformation);
         threadWeatherInformation.start();
+
+        Runner runnerAccessory = new Runner(connectionFactory,"accessory", accessoryParserJsonAndAnswerRMQ);
+        Thread threadAccessory = new Thread(runnerAccessory);
+        threadAccessory.start();
+
+        Runner runnerCap = new Runner(connectionFactory,"cap", capParserJsonAndAnswerRMQ);
+        Thread threadCap = new Thread(runnerCap);
+        threadCap.start();
+
+        Runner runnerOuterWear = new Runner(connectionFactory,"outerWear", outerWearParserJsonAndAnswerRMQ);
+        Thread threadOuterWear = new Thread(runnerOuterWear);
+        threadOuterWear.start();
+
+        Runner runnerUnderWear = new Runner(connectionFactory,"underWear", underWearParserJsonAndAnswerRMQ);
+        Thread threadUnderWear = new Thread(runnerUnderWear);
+        threadUnderWear.start();
+
+        Runner runnerFootWear = new Runner(connectionFactory,"footWear", footWearParserJsonAndAnswerRMQ);
+        Thread threadFootWear = new Thread(runnerFootWear);
+        threadFootWear.start();
 
     }
 

@@ -62,22 +62,25 @@ public class DataHandler implements AutoCloseable{
             OuterWearRMQ outerWearRMQ = new OuterWearRMQ("GETALLWITHLAZY", new OuterWear());
             String jsonOuterWear = dataHandler.call(gson.toJson(outerWearRMQ), "outerWear");
             Type jsonTypeOuterWear = new TypeToken<ArrayList<OuterWear>>(){}.getType();
-            dataHandler.setCaps(gson.fromJson(jsonOuterWear, jsonTypeOuterWear));
+            dataHandler.setOuterWears(gson.fromJson(jsonOuterWear, jsonTypeOuterWear));
 
             UnderWearRMQ underWearRMQ = new UnderWearRMQ("GETALLWITHLAZY", new UnderWear());
             String jsonUnderWear = dataHandler.call(gson.toJson(underWearRMQ), "underWear");
             Type jsonTypeUnderWear = new TypeToken<ArrayList<UnderWear>>(){}.getType();
-            dataHandler.setCaps(gson.fromJson(jsonUnderWear, jsonTypeUnderWear));
+            dataHandler.setUnderWears(gson.fromJson(jsonUnderWear, jsonTypeUnderWear));
 
             FootWearRMQ footWearRMQ = new FootWearRMQ("GETALLWITHLAZY", new FootWear());
             String jsonFootWear = dataHandler.call(gson.toJson(footWearRMQ), "footWear");
             Type jsonTypeFootWear = new TypeToken<ArrayList<FootWear>>(){}.getType();
-            dataHandler.setCaps(gson.fromJson(jsonFootWear, jsonTypeFootWear));
+            dataHandler.setFootWears(gson.fromJson(jsonFootWear, jsonTypeFootWear));
 
-            AccessoryRMQ footWearRMQ = new AccessoryRMQ("GETALLWITHLAZY", new Accessory());
-            String jsonFootWear = dataHandler.call(gson.toJson(footWearRMQ), "footWear");
-            Type jsonTypeFootWear = new TypeToken<ArrayList<FootWear>>(){}.getType();
-            dataHandler.setCaps(gson.fromJson(jsonFootWear, jsonTypeFootWear));
+            AccessoryRMQ accessoryRMQ = new AccessoryRMQ("GETALLWITHLAZY", new Accessory());
+            String jsonAccessory = dataHandler.call(gson.toJson(accessoryRMQ), "accessory");
+            Type jsonTypeAccessory = new TypeToken<ArrayList<Accessory>>(){}.getType();
+            dataHandler.setAccessories(gson.fromJson(jsonAccessory, jsonTypeAccessory));
+
+            ServerRMQ serverRMQ = new ServerRMQ(dataHandler.outerWears,dataHandler.caps,dataHandler.underWears,dataHandler.footWears,dataHandler.accessories);
+            serverRMQ.open();
 
         } catch (TimeoutException e) {
             e.printStackTrace();
