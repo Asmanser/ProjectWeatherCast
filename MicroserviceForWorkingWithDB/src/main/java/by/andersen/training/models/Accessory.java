@@ -25,7 +25,7 @@ public class Accessory {
     private String nameAccessory;
 
     @OneToMany(mappedBy="accessory", fetch = FetchType.LAZY)
-    private List<WeatherClothing> weatherClothings;
+    private transient List<WeatherClothing> weatherClothings;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="id_image")

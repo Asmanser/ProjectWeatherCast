@@ -4,6 +4,7 @@ import by.andersen.training.models.UnderWear;
 import by.andersen.training.repositories.UnderWearRepository;
 import by.andersen.training.services.repository.interfaces.UnderWearService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,11 +38,11 @@ public class UnderWearServiceImpl implements UnderWearService {
 
     @Override
     public List<UnderWear> findAll() {
-        List<UnderWear> footWears = new ArrayList<>();
-        for(UnderWear footWear : underWearRepository.findAll()) {
-            footWears.add(footWear);
+        List<UnderWear> underWears = new ArrayList<>();
+        for(UnderWear underWear : ((CrudRepository<UnderWear, Long>)underWearRepository).findAll()) {
+            underWears.add(underWear);
         }
-        return footWears;
+        return underWears;
     }
 
     @Override
@@ -65,16 +66,16 @@ public class UnderWearServiceImpl implements UnderWearService {
     }
 
     @Override
-    public Iterable<UnderWear> findWithAllLazyAll() {
-        List<UnderWear> footWears = new ArrayList<>();
-        for(UnderWear footWear : underWearRepository.findWithAllLazyAll()) {
-            footWears.add(footWear);
+    public List<UnderWear> findWithAllLazyAll() {
+        List<UnderWear> underWears = new ArrayList<>();
+        for(UnderWear underWear : underWearRepository.findAll()) {
+            underWears.add(underWear);
         }
-        return footWears;
+        return underWears;
     }
 
     @Override
     public UnderWear findWithAllLazyById(Long id) {
-        return underWearRepository.findWithAllLazyById(id).get();
+        return underWearRepository.findLazyById(id).get();
     }
 }

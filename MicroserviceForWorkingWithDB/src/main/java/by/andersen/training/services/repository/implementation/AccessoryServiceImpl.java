@@ -4,6 +4,7 @@ import by.andersen.training.models.Accessory;
 import by.andersen.training.repositories.AccessoryRepository;
 import by.andersen.training.services.repository.interfaces.AccessoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class AccessoryServiceImpl implements AccessoryService {
     @Override
     public List<Accessory> findAll() {
         List<Accessory> accessories = new ArrayList<>();
-        Iterable<Accessory> all = accessoryRepository.findAll();
+        Iterable<Accessory> all = ((CrudRepository<Accessory, Long>)accessoryRepository).findAll();
         for(Accessory accessory : all) {
             accessories.add(accessory);
         }
@@ -66,9 +67,9 @@ public class AccessoryServiceImpl implements AccessoryService {
     }
 
     @Override
-    public Iterable<Accessory> findWithAllLazyAll() {
+    public List<Accessory> findWithAllLazyAll() {
         List<Accessory> accessories = new ArrayList<>();
-        Iterable<Accessory> all = accessoryRepository.findWithAllLazyAll();
+        Iterable<Accessory> all = accessoryRepository.findAll();
         for(Accessory accessory : all) {
             accessories.add(accessory);
         }
@@ -77,6 +78,6 @@ public class AccessoryServiceImpl implements AccessoryService {
 
     @Override
     public Accessory findWithAllLazyById(Long id) {
-        return accessoryRepository.findWithAllLazyById(id).get();
+        return accessoryRepository.findLazyById(id).get();
     }
 }

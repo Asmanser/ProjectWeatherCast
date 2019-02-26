@@ -37,11 +37,11 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<Role> findAll() {
-        List<Role> footWears = new ArrayList<>();
-        for(Role footWear : roleRepository.findAll()) {
-            footWears.add(footWear);
+        List<Role> roles = new ArrayList<>();
+        for(Role role : roleRepository.findAll()) {
+            roles.add(role);
         }
-        return footWears;
+        return roles;
     }
 
     @Override

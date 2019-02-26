@@ -12,10 +12,10 @@ public interface WeatherClothingRepository extends CrudRepository<WeatherClothin
 
     @EntityGraph(attributePaths = {"outerWear","underWear","footWear","cap","accessory","outerWear.image",
     "underWear.image","footWear.image","cap.image","accessory.image"})
-    WeatherClothing findWithAllLazyById(Long aLong);
+    WeatherClothing findLazyById(Long aLong);
 
     @EntityGraph(attributePaths = {"outerWear","underWear","footWear","cap","accessory","outerWear.image",
             "underWear.image","footWear.image","cap.image","accessory.image"})
-    Iterable<WeatherClothing> findWithAllLazyAll();
+    Iterable<WeatherClothing> findAll();
 
 }

@@ -4,6 +4,7 @@ import by.andersen.training.models.FootWear;
 import by.andersen.training.repositories.FootWearRepository;
 import by.andersen.training.services.repository.interfaces.FootWearService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class FootWearServiceImpl implements FootWearService {
     @Override
     public List<FootWear> findAll() {
         List<FootWear> footWears = new ArrayList<>();
-        for(FootWear footWear : footWearRepository.findAll()) {
+        for(FootWear footWear : ((CrudRepository<FootWear, Long>)footWearRepository).findAll()) {
             footWears.add(footWear);
         }
         return footWears;
@@ -65,9 +66,9 @@ public class FootWearServiceImpl implements FootWearService {
     }
 
     @Override
-    public Iterable<FootWear> findWithAllLazyAll() {
+    public List<FootWear> findWithAllLazyAll() {
         List<FootWear> footWears = new ArrayList<>();
-        for(FootWear footWear : footWearRepository.findWithAllLazyAll()) {
+        for(FootWear footWear : footWearRepository.findAll()) {
             footWears.add(footWear);
         }
         return footWears;
@@ -75,6 +76,6 @@ public class FootWearServiceImpl implements FootWearService {
 
     @Override
     public FootWear findWithAllLazyById(Long id) {
-        return footWearRepository.findWithAllLazyById(id).get();
+        return footWearRepository.findLazyById(id).get();
     }
 }

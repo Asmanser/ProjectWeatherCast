@@ -4,6 +4,7 @@ import by.andersen.training.models.City;
 import by.andersen.training.repositories.CityRepository;
 import by.andersen.training.services.repository.interfaces.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -40,7 +41,7 @@ public class CityServiceImpl implements CityService {
     @Override
     public List<City> findAll() {
         List<City> cities = new ArrayList<>();
-        for(City city : cityRepository.findAll()) {
+        for(City city : ((CrudRepository<City, Long>)cityRepository).findAll()) {
             cities.add(city);
         }
         return cities;
@@ -67,9 +68,9 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public Iterable<City> findWithAllLazyAll() {
+    public List<City> findWithAllLazyAll() {
         List<City> cities = new ArrayList<>();
-        for(City city : cityRepository.findWithAllLazyAll()) {
+        for(City city : cityRepository.findAll()) {
             cities.add(city);
         }
         return cities;
@@ -77,6 +78,6 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public City findWithAllLazyById(Long id) {
-        return cityRepository.findWithCountryById(id).get();
+        return cityRepository.findLazyById(id).get();
     }
 }

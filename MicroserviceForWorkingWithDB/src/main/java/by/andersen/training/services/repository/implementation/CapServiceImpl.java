@@ -4,6 +4,7 @@ import by.andersen.training.models.Cap;
 import by.andersen.training.repositories.CapRepository;
 import by.andersen.training.services.repository.interfaces.CapService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class CapServiceImpl implements CapService {
     @Override
     public List<Cap> findAll() {
         List<Cap> caps = new ArrayList<>();
-        for(Cap cap : capRepository.findAll()) {
+        for(Cap cap : ((CrudRepository<Cap, Long>) capRepository).findAll()) {
             caps.add(cap);
         }
         return caps;
@@ -65,9 +66,9 @@ public class CapServiceImpl implements CapService {
     }
 
     @Override
-    public Iterable<Cap> findWithAllLazyAll() {
+    public List<Cap> findWithAllLazyAll() {
         List<Cap> caps = new ArrayList<>();
-        for(Cap cap : capRepository.findWithAllLazyAll()) {
+        for(Cap cap : capRepository.findAll()) {
             caps.add(cap);
         }
         return caps;
@@ -75,7 +76,7 @@ public class CapServiceImpl implements CapService {
 
     @Override
     public Cap findWithAllLazyById(Long id) {
-        return capRepository.findWithAllLazyById(id).get();
+        return capRepository.findLazyById(id).get();
     }
 
 }

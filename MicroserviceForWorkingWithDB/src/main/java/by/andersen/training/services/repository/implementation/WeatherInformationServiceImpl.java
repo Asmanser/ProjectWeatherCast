@@ -4,6 +4,7 @@ import by.andersen.training.models.WeatherInformation;
 import by.andersen.training.repositories.WeatherInformationRepository;
 import by.andersen.training.services.repository.interfaces.WeatherInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,11 +38,11 @@ public class WeatherInformationServiceImpl implements WeatherInformationService 
 
     @Override
     public List<WeatherInformation> findAll() {
-        List<WeatherInformation> footWears = new ArrayList<>();
-        for(WeatherInformation footWear : weatherInformationRepository.findAll()) {
-            footWears.add(footWear);
+        List<WeatherInformation> weatherInformations = new ArrayList<>();
+        for(WeatherInformation weatherInformation : ((CrudRepository<WeatherInformation, Long>)weatherInformationRepository).findAll()) {
+            weatherInformations.add(weatherInformation);
         }
-        return footWears;
+        return weatherInformations;
     }
 
     @Override
@@ -65,16 +66,16 @@ public class WeatherInformationServiceImpl implements WeatherInformationService 
     }
 
     @Override
-    public Iterable<WeatherInformation> findWithAllLazyAll() {
-        List<WeatherInformation> footWears = new ArrayList<>();
-        for(WeatherInformation footWear : weatherInformationRepository.findWithAllLazyAll()) {
-            footWears.add(footWear);
+    public List<WeatherInformation> findWithAllLazyAll() {
+        List<WeatherInformation> weatherInformations = new ArrayList<>();
+        for(WeatherInformation weatherInformation : weatherInformationRepository.findAll()) {
+            weatherInformations.add(weatherInformation);
         }
-        return footWears;
+        return weatherInformations;
     }
 
     @Override
     public WeatherInformation findWithAllLazyById(Long id) {
-        return weatherInformationRepository.findWithAllLazyById(id).get();
+        return weatherInformationRepository.findLazyById(id).get();
     }
 }

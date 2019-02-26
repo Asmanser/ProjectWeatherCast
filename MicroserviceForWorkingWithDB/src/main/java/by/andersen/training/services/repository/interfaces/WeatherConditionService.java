@@ -2,9 +2,11 @@ package by.andersen.training.services.repository.interfaces;
 
 import by.andersen.training.models.WeatherCondition;
 
+import java.util.List;
+
 public interface WeatherConditionService extends CrudService<WeatherCondition, Long> {
 
-    Iterable<WeatherCondition> findWithAllLazyAll();
+    List<WeatherCondition> findWithAllLazyAll();
 
     WeatherCondition findWithAllLazyById(Long id);
 

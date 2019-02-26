@@ -11,9 +11,9 @@ import java.util.Optional;
 public interface CapRepository extends CrudRepository<Cap, Long> {
 
     @EntityGraph(attributePaths = {"image"})
-    Iterable<Cap> findWithAllLazyAll();
+    Iterable<Cap> findAll();
 
     @EntityGraph(attributePaths = {"image"})
-    Optional<Cap> findWithAllLazyById(Long id);
+    Optional<Cap> findLazyById(Long id);
 
 }

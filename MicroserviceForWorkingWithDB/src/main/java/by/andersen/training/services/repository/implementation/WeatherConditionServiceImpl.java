@@ -4,6 +4,7 @@ import by.andersen.training.models.WeatherCondition;
 import by.andersen.training.repositories.WeatherConditionRepository;
 import by.andersen.training.services.repository.interfaces.WeatherConditionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,11 +38,11 @@ public class WeatherConditionServiceImpl implements WeatherConditionService {
 
     @Override
     public List<WeatherCondition> findAll() {
-        List<WeatherCondition> footWears = new ArrayList<>();
-        for(WeatherCondition footWear : weatherConditionRepository.findAll()) {
-            footWears.add(footWear);
+        List<WeatherCondition> weatherConditions = new ArrayList<>();
+        for(WeatherCondition weatherCondition : ((CrudRepository<WeatherCondition, Long>)weatherConditionRepository).findAll()) {
+            weatherConditions.add(weatherCondition);
         }
-        return footWears;
+        return weatherConditions;
     }
 
     @Override
@@ -65,16 +66,16 @@ public class WeatherConditionServiceImpl implements WeatherConditionService {
     }
 
     @Override
-    public Iterable<WeatherCondition> findWithAllLazyAll() {
-        List<WeatherCondition> footWears = new ArrayList<>();
-        for(WeatherCondition footWear : weatherConditionRepository.findWithAllLazyAll()) {
-            footWears.add(footWear);
+    public List<WeatherCondition> findWithAllLazyAll() {
+        List<WeatherCondition> weatherConditions = new ArrayList<>();
+        for(WeatherCondition weatherCondition : weatherConditionRepository.findAll()) {
+            weatherConditions.add(weatherCondition);
         }
-        return footWears;
+        return weatherConditions;
     }
 
     @Override
     public WeatherCondition findWithAllLazyById(Long id) {
-        return weatherConditionRepository.findWithAllLazyById(id).get();
+        return weatherConditionRepository.findLazyById(id).get();
     }
 }

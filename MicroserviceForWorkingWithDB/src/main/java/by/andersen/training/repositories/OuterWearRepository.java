@@ -11,9 +11,9 @@ import java.util.Optional;
 public interface OuterWearRepository extends CrudRepository<OuterWear, Long> {
 
     @EntityGraph(attributePaths = {"image"})
-    Iterable<OuterWear> findWithAllLazyAll();
+    Iterable<OuterWear> findAll();
 
     @EntityGraph(attributePaths = {"image"})
-    Optional<OuterWear> findWithAllLazyById(Long id);
+    Optional<OuterWear> findLazyById(Long id);
 
 }

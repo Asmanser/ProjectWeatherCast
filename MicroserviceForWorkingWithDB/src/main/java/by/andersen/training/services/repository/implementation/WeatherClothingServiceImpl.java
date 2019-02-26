@@ -4,6 +4,7 @@ import by.andersen.training.models.WeatherClothing;
 import by.andersen.training.repositories.WeatherClothingRepository;
 import by.andersen.training.services.repository.interfaces.WeatherClothingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,11 +38,11 @@ public class WeatherClothingServiceImpl implements WeatherClothingService {
 
     @Override
     public List<WeatherClothing> findAll() {
-        List<WeatherClothing> footWears = new ArrayList<>();
-        for(WeatherClothing footWear : weatherClothingRepository.findAll()) {
-            footWears.add(footWear);
+        List<WeatherClothing> weatherClothings = new ArrayList<>();
+        for(WeatherClothing weatherClothing : ((CrudRepository<WeatherClothing, Long>)weatherClothingRepository).findAll()) {
+            weatherClothings.add(weatherClothing);
         }
-        return footWears;
+        return weatherClothings;
     }
 
     @Override
@@ -66,15 +67,15 @@ public class WeatherClothingServiceImpl implements WeatherClothingService {
 
     @Override
     public WeatherClothing findWithAllLazyById(Long aLong) {
-        return weatherClothingRepository.findWithAllLazyById(aLong);
+        return weatherClothingRepository.findLazyById(aLong);
     }
 
     @Override
-    public Iterable<WeatherClothing> findWithAllLazyAll() {
-        List<WeatherClothing> footWears = new ArrayList<>();
-        for(WeatherClothing footWear : weatherClothingRepository.findWithAllLazyAll()) {
-            footWears.add(footWear);
+    public List<WeatherClothing> findWithAllLazyAll() {
+        List<WeatherClothing> weatherClothings = new ArrayList<>();
+        for(WeatherClothing weatherClothing : weatherClothingRepository.findAll()) {
+            weatherClothings.add(weatherClothing);
         }
-        return footWears;
+        return weatherClothings;
     }
 }

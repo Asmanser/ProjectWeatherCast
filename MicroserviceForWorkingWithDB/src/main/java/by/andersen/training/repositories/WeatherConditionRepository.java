@@ -11,9 +11,9 @@ import java.util.Optional;
 public interface WeatherConditionRepository extends CrudRepository<WeatherCondition, Long> {
 
     @EntityGraph(attributePaths = {"image"})
-    Iterable<WeatherCondition> findWithAllLazyAll();
+    Iterable<WeatherCondition> findAll();
 
     @EntityGraph(attributePaths = {"image"})
-    Optional<WeatherCondition> findWithAllLazyById(Long id);
+    Optional<WeatherCondition> findLazyById(Long id);
 
 }

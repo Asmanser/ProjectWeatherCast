@@ -10,12 +10,20 @@ import java.util.Optional;
 @Repository
 public interface WeatherInformationRepository extends CrudRepository<WeatherInformation, Long> {
 
-    @EntityGraph(attributePaths = {"city","directionWind","overcast","weatherCondition","weatherClothing",
-    "overcast,image","weatherCondition,image"})
-    Iterable<WeatherInformation> findWithAllLazyAll();
+    @EntityGraph(attributePaths = {"city","city.country","directionWind","overcast","weatherCondition",
+            "weatherClothing", "overcast.image","weatherCondition.image","weatherClothing","weatherClothing",
+            "weatherClothing.outerWear","weatherClothing.underWear","weatherClothing.footWear",
+            "weatherClothing.cap","weatherClothing.accessory","weatherClothing.outerWear.image",
+            "weatherClothing.underWear.image","weatherClothing.footWear.image","weatherClothing.cap.image",
+            "weatherClothing.accessory.image"})
+    Iterable<WeatherInformation> findAll();
 
-    @EntityGraph(attributePaths = {"city","directionWind","overcast","weatherCondition","weatherClothing",
-            "overcast,image","weatherCondition,image"})
-    Optional<WeatherInformation> findWithAllLazyById(Long id);
+    @EntityGraph(attributePaths = {"city","city.country","directionWind","overcast","weatherCondition",
+            "weatherClothing", "overcast.image","weatherCondition.image","weatherClothing","weatherClothing",
+            "weatherClothing.outerWear","weatherClothing.underWear","weatherClothing.footWear",
+            "weatherClothing.cap","weatherClothing.accessory","weatherClothing.outerWear.image",
+            "weatherClothing.underWear.image","weatherClothing.footWear.image","weatherClothing.cap.image",
+            "weatherClothing.accessory.image"})
+    Optional<WeatherInformation> findLazyById(Long id);
 
 }

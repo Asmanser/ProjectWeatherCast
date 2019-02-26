@@ -12,7 +12,6 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 import java.util.Properties;
 
-
 @Configuration
 @ComponentScan("by.andersen.training")
 @EnableJpaRepositories("by.andersen.training.repositories")

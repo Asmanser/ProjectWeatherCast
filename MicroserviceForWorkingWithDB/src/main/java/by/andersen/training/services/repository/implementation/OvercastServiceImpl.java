@@ -4,6 +4,7 @@ import by.andersen.training.models.Overcast;
 import by.andersen.training.repositories.OvercastRepository;
 import by.andersen.training.services.repository.interfaces.OvercastService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,11 +38,11 @@ public class OvercastServiceImpl implements OvercastService {
 
     @Override
     public List<Overcast> findAll() {
-        List<Overcast> footWears = new ArrayList<>();
-        for(Overcast footWear : overcastRepository.findAll()) {
-            footWears.add(footWear);
+        List<Overcast> overcasts = new ArrayList<>();
+        for(Overcast overcast : ((CrudRepository<Overcast, Long>)overcastRepository).findAll()) {
+            overcasts.add(overcast);
         }
-        return footWears;
+        return overcasts;
     }
 
     @Override
@@ -65,16 +66,16 @@ public class OvercastServiceImpl implements OvercastService {
     }
 
     @Override
-    public Iterable<Overcast> findWithAllLazyAll() {
-        List<Overcast> footWears = new ArrayList<>();
-        for(Overcast footWear : overcastRepository.findWithAllLazyAll()) {
-            footWears.add(footWear);
+    public List<Overcast> findWithAllLazyAll() {
+        List<Overcast> overcasts = new ArrayList<>();
+        for(Overcast overcast : overcastRepository.findAll()) {
+            overcasts.add(overcast);
         }
-        return footWears;
+        return overcasts;
     }
 
     @Override
     public Overcast findWithAllLazyById(Long id) {
-        return overcastRepository.findWithAllLazyById(id).get();
+        return overcastRepository.findLazyById(id).get();
     }
 }

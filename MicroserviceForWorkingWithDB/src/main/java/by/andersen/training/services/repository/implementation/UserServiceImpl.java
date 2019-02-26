@@ -4,6 +4,7 @@ import by.andersen.training.models.User;
 import by.andersen.training.repositories.UserRepository;
 import by.andersen.training.services.repository.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -40,7 +41,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
-        Iterable<User> itr = userRepository.findAll();
+        Iterable<User> itr = ((CrudRepository<User, Long>)userRepository).findAll();
         for(User user : itr) {
             users.add(user);
         }
@@ -68,9 +69,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Iterable<User> findWithAllLazyAll() {
+    public List<User> findWithAllLazyAll() {
         List<User> users = new ArrayList<>();
-        Iterable<User> itr = userRepository.findWithAllLazyAll();
+        Iterable<User> itr = userRepository.findAll();
         for(User user : itr) {
             users.add(user);
         }
@@ -79,6 +80,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findWithAllLazyById(Long id) {
-        return userRepository.findWithAllLazyById(id).get();
+        return userRepository.findLazyById(id).get();
     }
 }

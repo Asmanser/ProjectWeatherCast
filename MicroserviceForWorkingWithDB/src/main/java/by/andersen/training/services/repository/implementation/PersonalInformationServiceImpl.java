@@ -4,6 +4,7 @@ import by.andersen.training.models.PersonalInformation;
 import by.andersen.training.repositories.PersonalInformationRepository;
 import by.andersen.training.services.repository.interfaces.PersonalInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,11 +38,11 @@ public class PersonalInformationServiceImpl implements PersonalInformationServic
 
     @Override
     public List<PersonalInformation> findAll() {
-        List<PersonalInformation> footWears = new ArrayList<>();
-        for(PersonalInformation footWear : personalInformationRepository.findAll()) {
-            footWears.add(footWear);
+        List<PersonalInformation> personalInformations = new ArrayList<>();
+        for(PersonalInformation personalInformation : ((CrudRepository<PersonalInformation, Long>)personalInformationRepository).findAll()) {
+            personalInformations.add(personalInformation);
         }
-        return footWears;
+        return personalInformations;
     }
 
     @Override
@@ -66,16 +67,16 @@ public class PersonalInformationServiceImpl implements PersonalInformationServic
 
 
     @Override
-    public Iterable<PersonalInformation> findWithAllLazyAll() {
-        List<PersonalInformation> footWears = new ArrayList<>();
-        for(PersonalInformation footWear : personalInformationRepository.findWithAllLazyAll()) {
-            footWears.add(footWear);
+    public List<PersonalInformation> findWithAllLazyAll() {
+        List<PersonalInformation> personalInformations = new ArrayList<>();
+        for(PersonalInformation personalInformation : personalInformationRepository.findAll()) {
+            personalInformations.add(personalInformation);
         }
-        return footWears;
+        return personalInformations;
     }
 
     @Override
     public PersonalInformation findWithAllLazyById(Long id) {
-        return personalInformationRepository.findWithAllLazyById(id).get();
+        return personalInformationRepository.findLazyById(id).get();
     }
 }

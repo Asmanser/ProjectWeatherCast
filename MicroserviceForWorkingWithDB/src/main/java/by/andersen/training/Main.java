@@ -14,12 +14,15 @@ import by.andersen.training.models.UnderWear;
 import by.andersen.training.models.User;
 import by.andersen.training.models.WeatherClothing;
 import by.andersen.training.models.WeatherInformation;
+import by.andersen.training.services.rabbitmq.interfaces.RabbitMQServer;
 import by.andersen.training.services.repository.implementation.UserServiceImpl;
 import by.andersen.training.services.repository.implementation.WeatherClothingServiceImpl;
 import by.andersen.training.services.repository.interfaces.CityService;
 import by.andersen.training.services.repository.interfaces.UserService;
 import by.andersen.training.services.repository.interfaces.WeatherClothingService;
 import by.andersen.training.services.repository.interfaces.WeatherInformationService;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -33,15 +36,27 @@ public class Main {
 
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-        WeatherInformationService weatherInformationService = context.getBean(WeatherInformationService.class);
+        RabbitMQServer bean = context.getBean(RabbitMQServer.class);
+        bean.open();
+        //WeatherInformationService weatherInformationService = context.getBean(WeatherInformationService.class);
         /*CityService cityService = context.getBean(CityService.class);
         City city = cityService.findById(8L);
         System.out.println(city.getCountry().getCountryName());*/
         //WeatherInformation weatherInformation = new WeatherInformation();
-        UserService userRepository = context.getBean(UserService.class);
+        /*UserService userRepository = context.getBean(UserService.class);
         WeatherClothingService weatherClothingService = context.getBean(WeatherClothingService.class);
-        WeatherClothing withAllLazyById = weatherClothingService.findWithAllLazyById(2L);
-        System.out.println(withAllLazyById);
+        List<User> all = userRepository.findAll();
+        for(User user : all) {
+            for(Role role : user.getRoles()) {
+                role.setUsers(null);
+            }
+            user.getPersonalInformation().getCity().setPersonalInformations(null);
+            user.getPersonalInformation().getCity().setWeatherInformations(null);
+            user.getPersonalInformation().getCity().getCountry().setCities(null);
+        }
+        Gson gson = new Gson();
+        System.out.println(gson.toJson(all));
+        System.out.println("Hey");*/
         /*WeatherClothing weatherClothing = new WeatherClothing();
         Accessory accessory = new Accessory();
         accessory.setNameAccessory("Umbrella");

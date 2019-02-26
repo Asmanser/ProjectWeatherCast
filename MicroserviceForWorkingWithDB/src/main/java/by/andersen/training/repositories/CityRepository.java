@@ -11,8 +11,8 @@ import java.util.Optional;
 public interface CityRepository  extends CrudRepository<City, Long> {
 
     @EntityGraph(attributePaths = {"country"})
-    Iterable<City> findWithAllLazyAll();
+    Iterable<City> findAll();
 
     @EntityGraph(attributePaths = {"country"})
-    Optional<City> findWithCountryById(Long aLong);
+    Optional<City> findLazyById(Long aLong);
 }

@@ -11,9 +11,9 @@ import java.util.Optional;
 public interface OvercastRepository extends CrudRepository<Overcast, Long> {
 
     @EntityGraph(attributePaths = {"image"})
-    Iterable<Overcast> findWithAllLazyAll();
+    Iterable<Overcast> findAll();
 
     @EntityGraph(attributePaths = {"image"})
-    Optional<Overcast> findWithAllLazyById(Long id);
+    Optional<Overcast> findLazyById(Long id);
 
 }

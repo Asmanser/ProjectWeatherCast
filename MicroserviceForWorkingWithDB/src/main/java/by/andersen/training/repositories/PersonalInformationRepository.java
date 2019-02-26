@@ -10,10 +10,10 @@ import java.util.Optional;
 @Repository
 public interface PersonalInformationRepository extends CrudRepository<PersonalInformation, Long> {
 
-    @EntityGraph(attributePaths = {"city"})
-    Iterable<PersonalInformation> findWithAllLazyAll();
+    @EntityGraph(attributePaths = {"city", "city.country"})
+    Iterable<PersonalInformation> findAll();
 
-    @EntityGraph(attributePaths = {"city"})
-    Optional<PersonalInformation> findWithAllLazyById(Long id);
+    @EntityGraph(attributePaths = {"city", "city.country"})
+    Optional<PersonalInformation> findLazyById(Long id);
 
 }

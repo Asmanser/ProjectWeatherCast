@@ -4,6 +4,7 @@ import by.andersen.training.models.OuterWear;
 import by.andersen.training.repositories.OuterWearRepository;
 import by.andersen.training.services.repository.interfaces.OuterWearService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,11 +38,11 @@ public class OuterWearServiceImpl implements OuterWearService {
 
     @Override
     public List<OuterWear> findAll() {
-        List<OuterWear> footWears = new ArrayList<>();
-        for(OuterWear footWear : outerWearRepository.findAll()) {
-            footWears.add(footWear);
+        List<OuterWear> outerWears = new ArrayList<>();
+        for(OuterWear outerWear : ((CrudRepository<OuterWear, Long>)outerWearRepository).findAll()) {
+            outerWears.add(outerWear);
         }
-        return footWears;
+        return outerWears;
     }
 
     @Override
@@ -65,16 +66,16 @@ public class OuterWearServiceImpl implements OuterWearService {
     }
 
     @Override
-    public Iterable<OuterWear> findWithAllLazyAll() {
-        List<OuterWear> footWears = new ArrayList<>();
-        for(OuterWear footWear : outerWearRepository.findWithAllLazyAll()) {
-            footWears.add(footWear);
+    public List<OuterWear> findWithAllLazyAll() {
+        List<OuterWear> outerWears = new ArrayList<>();
+        for(OuterWear outerWear : outerWearRepository.findAll()) {
+            outerWears.add(outerWear);
         }
-        return footWears;
+        return outerWears;
     }
 
     @Override
     public OuterWear findWithAllLazyById(Long id) {
-        return outerWearRepository.findWithAllLazyById(id).get();
+        return outerWearRepository.findLazyById(id).get();
     }
 }
