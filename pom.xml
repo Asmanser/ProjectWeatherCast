@@ -18,5 +18,6 @@
     <modules>
         <module>MicroserviceForWorkingWithDB</module>
         <module>WeatherGenerator</module>
+        <module>WeatherGenerator</module>
     </modules>
 </project>
