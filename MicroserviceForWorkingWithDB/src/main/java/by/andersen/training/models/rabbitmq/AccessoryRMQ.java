@@ -8,6 +8,11 @@ public class AccessoryRMQ {
 
     private Accessory accessory;
 
+    public AccessoryRMQ(String operation, Accessory accessory) {
+        this.operation = operation;
+        this.accessory = accessory;
+    }
+
     public String getOperation() {
         return operation;
     }

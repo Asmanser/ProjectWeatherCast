@@ -12,12 +12,25 @@
 
     <dependencies>
 
+        <!-- https://mvnrepository.com/artifact/com.rabbitmq/amqp-client -->
+        <dependency>
+            <groupId>com.rabbitmq</groupId>
+            <artifactId>amqp-client</artifactId>
+            <version>5.4.3</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.5</version>
+        </dependency>
 
     </dependencies>
 
     <modules>
         <module>MicroserviceForWorkingWithDB</module>
         <module>WeatherGenerator</module>
-        <module>WeatherGenerator</module>
+        <module>DataHandler</module>
     </modules>
 </project>

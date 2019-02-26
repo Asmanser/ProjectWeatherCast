@@ -7,9 +7,11 @@ import by.andersen.training.services.rabbitmq.interfaces.ParserJsonAndAnswerRMQ;
 import by.andersen.training.services.repository.interfaces.WeatherInformationService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class WeatherInformationParserJsonAndAnswerRMQ implements ParserJsonAndAnswerRMQ {
 
     @Autowired

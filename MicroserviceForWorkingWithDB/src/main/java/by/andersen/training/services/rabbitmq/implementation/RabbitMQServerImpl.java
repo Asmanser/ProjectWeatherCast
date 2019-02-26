@@ -24,6 +24,21 @@ public class RabbitMQServerImpl implements RabbitMQServer {
     @Autowired
     private UserParserJsonAndAnswerRMQ userParserJsonAndAnswerRMQ;
 
+    @Autowired
+    private CityParserJsonAndAnswerRMQ cityParserJsonAndAnswerRMQ;
+
+    @Autowired
+    private OvercastParserJsonAndAnswerRMQ overcastParserJsonAndAnswerRMQ;
+
+    @Autowired
+    private DirectionWindParserJsonAndAnswerRMQ directionWindParserJsonAndAnswerRMQ;
+
+    @Autowired
+    private WeatherConditionParserJsonAndAnswerRMQ weatherConditionParserJsonAndAnswerRMQ;
+
+    @Autowired
+    private WeatherInformationParserJsonAndAnswerRMQ weatherInformationParserJsonAndAnswerRMQ;
+
     @PostConstruct
     private void init() {
         connectionFactory.setHost("localhost");
@@ -31,9 +46,26 @@ public class RabbitMQServerImpl implements RabbitMQServer {
 
     @Override
     public void open() {
-        Runner runner = new Runner(connectionFactory,"user",userParserJsonAndAnswerRMQ );
-        Thread thread = new Thread(runner);
-        thread.start();
+        Runner runnerCity = new Runner(connectionFactory,"city", cityParserJsonAndAnswerRMQ);
+        Thread threadCity = new Thread(runnerCity);
+        threadCity.start();
+
+        Runner runnerOvercast = new Runner(connectionFactory,"overcast", overcastParserJsonAndAnswerRMQ);
+        Thread threadOvercast = new Thread(runnerOvercast);
+        threadOvercast.start();
+
+        Runner runnerDirectionWind = new Runner(connectionFactory,"directionWind", directionWindParserJsonAndAnswerRMQ);
+        Thread threadDirectionWind = new Thread(runnerDirectionWind);
+        threadDirectionWind.start();
+
+        Runner runnerWeatherCondition = new Runner(connectionFactory,"weatherCondition", weatherConditionParserJsonAndAnswerRMQ);
+        Thread threadWeatherCondition = new Thread(runnerWeatherCondition);
+        threadWeatherCondition.start();
+
+        Runner runnerWeatherInformation = new Runner(connectionFactory,"weatherInformation", weatherInformationParserJsonAndAnswerRMQ);
+        Thread threadWeatherInformation = new Thread(runnerWeatherInformation);
+        threadWeatherInformation.start();
+
     }
 
     private class Runner implements Runnable {

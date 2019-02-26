@@ -21,8 +21,6 @@ import by.andersen.training.services.repository.interfaces.CityService;
 import by.andersen.training.services.repository.interfaces.UserService;
 import by.andersen.training.services.repository.interfaces.WeatherClothingService;
 import by.andersen.training.services.repository.interfaces.WeatherInformationService;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -32,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Main {
+public class WorkWithDB {
 
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);

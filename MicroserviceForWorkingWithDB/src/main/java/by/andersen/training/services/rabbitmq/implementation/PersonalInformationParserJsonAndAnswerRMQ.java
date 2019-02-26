@@ -6,9 +6,11 @@ import by.andersen.training.services.rabbitmq.interfaces.ParserJsonAndAnswerRMQ;
 import by.andersen.training.services.repository.interfaces.PersonalInformationService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class PersonalInformationParserJsonAndAnswerRMQ implements ParserJsonAndAnswerRMQ {
 
     @Autowired

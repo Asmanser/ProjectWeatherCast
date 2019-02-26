@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import java.util.List;
 
 @Entity
-@Table(name = "weather_condition")
+@Table(name = "weather_conditions")
 public class WeatherCondition {
 
     @Id
@@ -25,7 +25,7 @@ public class WeatherCondition {
     private String nameWeatherConditions;
 
     @OneToMany(mappedBy="weatherCondition", fetch = FetchType.LAZY)
-    private List<WeatherInformation> weatherInformations;
+    private transient List<WeatherInformation> weatherInformations;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="id_image")
