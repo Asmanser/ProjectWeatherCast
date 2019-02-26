@@ -51,7 +51,7 @@ public class ServerRMQ {
         Thread threadWeatherInformation = new Thread(runnerWeatherInformation);
         threadWeatherInformation.start();
     }
-
+    // Этот класс есть и в сервисе рабоыт с бд
     private class Runner implements Runnable {
 
         private ConnectionFactory factory;
@@ -119,7 +119,7 @@ public class ServerRMQ {
                 e.printStackTrace();
             }
         }
-
+        //2 раз повторяется этот метод в этом проекте
         public String call(String message, String requestQueueName,Channel channel) throws IOException, InterruptedException {
             final String corrId = UUID.randomUUID().toString();
 

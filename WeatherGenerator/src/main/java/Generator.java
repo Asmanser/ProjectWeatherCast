@@ -119,7 +119,7 @@ public class Generator implements AutoCloseable{
             localDate = localDate.plusDays(1);
         }
     }
-
+    //Это метод отправки сообщения и возврата результат, есть и в обработчике
     public String call(String message, String requestQueueName) throws IOException, InterruptedException {
         final String corrId = UUID.randomUUID().toString();
 
