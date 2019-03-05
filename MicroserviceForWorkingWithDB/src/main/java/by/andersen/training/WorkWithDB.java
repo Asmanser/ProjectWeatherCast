@@ -1,6 +1,6 @@
 package by.andersen.training;
 
-import by.andersen.training.config.AppConfig;
+import by.andersen.training.weathercast.config.AppConfig;
 import by.andersen.training.services.rabbitmq.interfaces.RabbitMQServer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 

@@ -1,4 +1,4 @@
-package by.andersen.training.config;
+package by.andersen.training.weathercast.config;
 
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.context.annotation.Bean;
