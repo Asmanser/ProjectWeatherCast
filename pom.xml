@@ -33,5 +33,6 @@
         <module>WeatherGenerator</module>
         <module>DataHandler</module>
         <module>DataAnalysisForCustomer</module>
+        <module>SharedLibrary</module>
     </modules>
 </project>

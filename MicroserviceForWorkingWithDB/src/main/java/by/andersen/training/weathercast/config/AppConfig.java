@@ -14,7 +14,7 @@ import java.util.Properties;
 
 @Configuration
 @ComponentScan("by.andersen.training")
-@EnableJpaRepositories("by.andersen.training.repositories")
+@EnableJpaRepositories("by.andersen.training.weathercast.repositories")
 public class AppConfig {
 
     @Bean
@@ -28,7 +28,7 @@ public class AppConfig {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+    public LocalContainerEntityManagerFactoryBean myEntityManagerFactory() {
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setDataSource(conferenceDataSource());
         factoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
@@ -36,7 +36,6 @@ public class AppConfig {
         Properties jpaProperties = new Properties();
         jpaProperties.setProperty("hibernate.dialect","org.hibernate.dialect.MySQL5Dialect");
         jpaProperties.setProperty("show_sql","true");
-        //jpaProperties.setProperty("hbm2ddl.auto","create-drop");
         factoryBean.setJpaProperties(jpaProperties);
         factoryBean.setPackagesToScan("by.andersen.training");
         return factoryBean;
@@ -45,7 +44,7 @@ public class AppConfig {
     @Bean
     public JpaTransactionManager transactionManager() {
         JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
-        jpaTransactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
+        jpaTransactionManager.setEntityManagerFactory(myEntityManagerFactory().getObject());
         return jpaTransactionManager;
     }
 
