@@ -93,6 +93,10 @@ public class RabbitMQServerImpl implements RabbitMQServer {
         AcceptMessageAndSendReplyRMQ acceptMessageAndSendReplyRMQFootWear = new AcceptMessageAndSendReplyRMQ(
                 connectionFactory,"footWear",footWearParserJsonAndAnswerRMQ);
         acceptMessageAndSendReplyRMQFootWear.start();
+
+        AcceptMessageAndSendReplyRMQ acceptMessageAndSendReplyRMQUser = new AcceptMessageAndSendReplyRMQ(
+                connectionFactory,"user",userParserJsonAndAnswerRMQ);
+        acceptMessageAndSendReplyRMQUser.start();
     }
 
 }
