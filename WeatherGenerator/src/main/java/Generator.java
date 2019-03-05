@@ -8,34 +8,21 @@ import by.andersen.training.models.rabbitmq.DirectionWindRMQ;
 import by.andersen.training.models.rabbitmq.OvercastRMQ;
 import by.andersen.training.models.rabbitmq.WeatherConditionRMQ;
 import by.andersen.training.models.rabbitmq.WeatherInformationRMQ;
+import by.andersen.training.rmq.SendMessageAndAcceptResponseRMQ;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
-import com.sun.javafx.cursor.CursorType;
-import java.time.temporal.ChronoField;
-
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeoutException;
 
 public class Generator implements AutoCloseable{
 
     private ConnectionFactory connectionFactory;
-
-    private Connection connection;
-
-    private Channel channel;
 
     private List<City> cities;
 
@@ -48,39 +35,47 @@ public class Generator implements AutoCloseable{
     public Generator() throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
-
-        connection = factory.newConnection();
-        channel = connection.createChannel();
+        this.connectionFactory = factory;
     }
 
     public static void main(String[] argv) throws InterruptedException {
         try(Generator generator = new Generator()) {
             Gson gson = new Gson();
 
-            CityRMQ cityRMQ = new CityRMQ("GETALLWITHLAZY", new City());
-            String jsonCities = generator.call(gson.toJson(cityRMQ), "city");
+            SendMessageAndAcceptResponseRMQ sendMessageAndAcceptResponseRMQCity =
+                    new SendMessageAndAcceptResponseRMQ(generator.connectionFactory,
+                            "city",gson.toJson(new CityRMQ("GETALLWITHLAZY", new City())));
+            sendMessageAndAcceptResponseRMQCity.start();
+            sendMessageAndAcceptResponseRMQCity.join();
             Type jsonTypeCities = new TypeToken<ArrayList<City>>(){}.getType();
-            generator.setCities(gson.fromJson(jsonCities, jsonTypeCities));
+            generator.setCities(gson.fromJson(sendMessageAndAcceptResponseRMQCity.getAnswer(), jsonTypeCities));
 
-            DirectionWindRMQ directionWindRMQ = new DirectionWindRMQ("GETALL", new DirectionWind());
-            String jsonDirectionWind = generator.call(gson.toJson(directionWindRMQ), "directionWind");
+            SendMessageAndAcceptResponseRMQ sendMessageAndAcceptResponseRMQDirectionWind =
+                    new SendMessageAndAcceptResponseRMQ(generator.connectionFactory,
+                            "directionWind",gson.toJson(new DirectionWindRMQ("GETALL", new DirectionWind())));
+            sendMessageAndAcceptResponseRMQDirectionWind.start();
+            sendMessageAndAcceptResponseRMQDirectionWind.join();
             Type jsonTypeDirectionWind = new TypeToken<ArrayList<DirectionWind>>(){}.getType();
-            generator.setDirectionWinds(gson.fromJson(jsonDirectionWind, jsonTypeDirectionWind));
+            generator.setDirectionWinds(gson.fromJson(sendMessageAndAcceptResponseRMQDirectionWind.getAnswer(), jsonTypeDirectionWind));
 
-            WeatherConditionRMQ weatherConditionRMQ = new WeatherConditionRMQ("GETALLWITHLAZY",new WeatherCondition());
-            String jsonWeatherCondition = generator.call(gson.toJson(weatherConditionRMQ), "weatherCondition");
+            SendMessageAndAcceptResponseRMQ sendMessageAndAcceptResponseRMQWeatherCondition =
+                    new SendMessageAndAcceptResponseRMQ(generator.connectionFactory,
+                            "weatherCondition",gson.toJson(new WeatherConditionRMQ("GETALLWITHLAZY",new WeatherCondition())));
+            sendMessageAndAcceptResponseRMQWeatherCondition.start();
+            sendMessageAndAcceptResponseRMQWeatherCondition.join();
             Type jsonTypeWeatherCondition = new TypeToken<ArrayList<WeatherCondition>>(){}.getType();
-            generator.setWeatherConditions(gson.fromJson(jsonWeatherCondition, jsonTypeWeatherCondition));
+            generator.setWeatherConditions(gson.fromJson(sendMessageAndAcceptResponseRMQWeatherCondition.getAnswer(), jsonTypeWeatherCondition));
 
-            OvercastRMQ overcastRMQ = new OvercastRMQ("GETALLWITHLAZY", new Overcast());
-            String jsonOvercast = generator.call(gson.toJson(overcastRMQ), "overcast");
+            SendMessageAndAcceptResponseRMQ sendMessageAndAcceptResponseRMQOvercast =
+                    new SendMessageAndAcceptResponseRMQ(generator.connectionFactory,
+                            "overcast",gson.toJson(new OvercastRMQ("GETALLWITHLAZY", new Overcast())));
+            sendMessageAndAcceptResponseRMQOvercast.start();
+            sendMessageAndAcceptResponseRMQOvercast.join();
             Type jsonTypeOvercast = new TypeToken<ArrayList<Overcast>>(){}.getType();
-            generator.setOvercasts(gson.fromJson(jsonOvercast, jsonTypeOvercast));
+            generator.setOvercasts(gson.fromJson(sendMessageAndAcceptResponseRMQOvercast.getAnswer(), jsonTypeOvercast));
 
             generator.generate();
 
-            System.out.println();
-            //close(connection);
         } catch (IOException | TimeoutException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -96,8 +91,6 @@ public class Generator implements AutoCloseable{
         while(true) {
             for(City city : this.cities) {
                 WeatherInformation weatherInformation = new WeatherInformation();
-                /*Random random = new Random();
-                Random randomTemperature = new Random(-20);*/
                 weatherInformation.setMinAirTemperature((int)(Math.random() * ((50 - (-20)) + 1)));
                 weatherInformation.setMaxAirTemperature(weatherInformation.getMinAirTemperature() + 2);
                 weatherInformation.setWindSpeed((int)(Math.random() * ((10 - 0) + 1)));
@@ -110,7 +103,12 @@ public class Generator implements AutoCloseable{
                 weatherInformation.setWeatherCondition(this.weatherConditions.get((int)(Math.random() * ((this.weatherConditions.size()-1) - 0) + 1)));
                 weatherInformation.setWeatherClothing(null);
                 WeatherInformationRMQ weatherInformationRMQ = new WeatherInformationRMQ("SAVE",weatherInformation);
-                String jsonWeatherInformation = this.call(gson.toJson(weatherInformationRMQ), "weatherInformationHandler");
+                SendMessageAndAcceptResponseRMQ sendMessageAndAcceptResponseRMQWeatherInformation =
+                        new SendMessageAndAcceptResponseRMQ(this.connectionFactory,
+                                "weatherInformationHandler",gson.toJson(weatherInformationRMQ));
+                sendMessageAndAcceptResponseRMQWeatherInformation.start();
+                sendMessageAndAcceptResponseRMQWeatherInformation.join();
+                String jsonWeatherInformation = sendMessageAndAcceptResponseRMQWeatherInformation.getAnswer();
                 if(!jsonWeatherInformation.equals("true")) {
                     System.out.println("Don't save: " + gson.toJson(weatherInformationRMQ));
                 }
@@ -119,36 +117,9 @@ public class Generator implements AutoCloseable{
             localDate = localDate.plusDays(1);
         }
     }
-    //Это метод отправки сообщения и возврата результат, есть и в обработчике
-    public String call(String message, String requestQueueName) throws IOException, InterruptedException {
-        final String corrId = UUID.randomUUID().toString();
-
-        String replyQueueName = channel.queueDeclare().getQueue();
-        AMQP.BasicProperties props = new AMQP.BasicProperties
-                .Builder()
-                .correlationId(corrId)
-                .replyTo(replyQueueName)
-                .build();
-
-        channel.basicPublish("", requestQueueName, props, message.getBytes("UTF-8"));
-
-        final BlockingQueue<String> response = new ArrayBlockingQueue<>(1);
-
-        String ctag = channel.basicConsume(replyQueueName, true, (consumerTag, delivery) -> {
-            if (delivery.getProperties().getCorrelationId().equals(corrId)) {
-                response.offer(new String(delivery.getBody(), "UTF-8"));
-            }
-        }, consumerTag -> {
-        });
-
-        String result = response.take();
-        channel.basicCancel(ctag);
-        return result;
-    }
 
     @Override
     public void close() throws Exception {
-        connection.close();
     }
 
     public List<City> getCities() {

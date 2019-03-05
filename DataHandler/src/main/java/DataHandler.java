@@ -8,29 +8,21 @@ import by.andersen.training.models.rabbitmq.CapRMQ;
 import by.andersen.training.models.rabbitmq.FootWearRMQ;
 import by.andersen.training.models.rabbitmq.OuterWearRMQ;
 import by.andersen.training.models.rabbitmq.UnderWearRMQ;
+import by.andersen.training.rmq.AcceptMessageAndSendReplyRMQ;
+import by.andersen.training.rmq.SendMessageAndAcceptResponseRMQ;
+import by.andersen.training.rmq.WeatherInformationParserJsonAndAnswerRMQ;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
-
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeoutException;
 
 public class DataHandler implements AutoCloseable{
 
     private ConnectionFactory connectionFactory;
-
-    private Connection connection;
-
-    private Channel channel;
 
     private List<OuterWear> outerWears;
 
@@ -45,42 +37,60 @@ public class DataHandler implements AutoCloseable{
     public DataHandler() throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
-
-        connection = factory.newConnection();
-        channel = connection.createChannel();
+        connectionFactory = factory;
     }
 
     public static void main(String[] args) {
         try(DataHandler dataHandler = new DataHandler()) {
             Gson gson = new Gson();
 
-            CapRMQ capRMQ = new CapRMQ("GETALLWITHLAZY", new Cap());
-            String jsonCaps = dataHandler.call(gson.toJson(capRMQ), "cap");
+            SendMessageAndAcceptResponseRMQ sendMessageAndAcceptResponseRMQCap =
+                    new SendMessageAndAcceptResponseRMQ(dataHandler.connectionFactory,
+                    "cap",gson.toJson(new CapRMQ("GETALLWITHLAZY", new Cap())));
+            sendMessageAndAcceptResponseRMQCap.start();
+            sendMessageAndAcceptResponseRMQCap.join();
             Type jsonTypeCaps = new TypeToken<ArrayList<Cap>>(){}.getType();
-            dataHandler.setCaps(gson.fromJson(jsonCaps, jsonTypeCaps));
+            dataHandler.setCaps(gson.fromJson(sendMessageAndAcceptResponseRMQCap.getAnswer(), jsonTypeCaps));
 
-            OuterWearRMQ outerWearRMQ = new OuterWearRMQ("GETALLWITHLAZY", new OuterWear());
-            String jsonOuterWear = dataHandler.call(gson.toJson(outerWearRMQ), "outerWear");
+            SendMessageAndAcceptResponseRMQ sendMessageAndAcceptResponseRMQOuterWear =
+                    new SendMessageAndAcceptResponseRMQ(dataHandler.connectionFactory,
+                    "outerWear",gson.toJson(new OuterWearRMQ("GETALLWITHLAZY", new OuterWear())));
+            sendMessageAndAcceptResponseRMQOuterWear.start();
+            sendMessageAndAcceptResponseRMQOuterWear.join();
             Type jsonTypeOuterWear = new TypeToken<ArrayList<OuterWear>>(){}.getType();
-            dataHandler.setOuterWears(gson.fromJson(jsonOuterWear, jsonTypeOuterWear));
+            dataHandler.setOuterWears(gson.fromJson(sendMessageAndAcceptResponseRMQOuterWear.getAnswer(), jsonTypeOuterWear));
 
-            UnderWearRMQ underWearRMQ = new UnderWearRMQ("GETALLWITHLAZY", new UnderWear());
-            String jsonUnderWear = dataHandler.call(gson.toJson(underWearRMQ), "underWear");
+            SendMessageAndAcceptResponseRMQ sendMessageAndAcceptResponseRMQUnderWear =
+                    new SendMessageAndAcceptResponseRMQ(dataHandler.connectionFactory,
+                    "underWear",gson.toJson(new UnderWearRMQ("GETALLWITHLAZY", new UnderWear())));
+            sendMessageAndAcceptResponseRMQUnderWear.start();
+            sendMessageAndAcceptResponseRMQUnderWear.join();
             Type jsonTypeUnderWear = new TypeToken<ArrayList<UnderWear>>(){}.getType();
-            dataHandler.setUnderWears(gson.fromJson(jsonUnderWear, jsonTypeUnderWear));
+            dataHandler.setUnderWears(gson.fromJson(sendMessageAndAcceptResponseRMQUnderWear.getAnswer(), jsonTypeUnderWear));
 
-            FootWearRMQ footWearRMQ = new FootWearRMQ("GETALLWITHLAZY", new FootWear());
-            String jsonFootWear = dataHandler.call(gson.toJson(footWearRMQ), "footWear");
+            SendMessageAndAcceptResponseRMQ sendMessageAndAcceptResponseRMQFootWear =
+                    new SendMessageAndAcceptResponseRMQ(dataHandler.connectionFactory,
+                    "footWear",gson.toJson(new FootWearRMQ("GETALLWITHLAZY", new FootWear())));
+            sendMessageAndAcceptResponseRMQFootWear.start();
+            sendMessageAndAcceptResponseRMQFootWear.join();
             Type jsonTypeFootWear = new TypeToken<ArrayList<FootWear>>(){}.getType();
-            dataHandler.setFootWears(gson.fromJson(jsonFootWear, jsonTypeFootWear));
+            dataHandler.setFootWears(gson.fromJson(sendMessageAndAcceptResponseRMQFootWear.getAnswer(), jsonTypeFootWear));
 
-            AccessoryRMQ accessoryRMQ = new AccessoryRMQ("GETALLWITHLAZY", new Accessory());
-            String jsonAccessory = dataHandler.call(gson.toJson(accessoryRMQ), "accessory");
+            SendMessageAndAcceptResponseRMQ sendMessageAndAcceptResponseRMQAccessory =
+                    new SendMessageAndAcceptResponseRMQ(dataHandler.connectionFactory,
+                    "accessory",gson.toJson(new AccessoryRMQ("GETALLWITHLAZY", new Accessory())));
+            sendMessageAndAcceptResponseRMQAccessory.start();
+            sendMessageAndAcceptResponseRMQAccessory.join();
             Type jsonTypeAccessory = new TypeToken<ArrayList<Accessory>>(){}.getType();
-            dataHandler.setAccessories(gson.fromJson(jsonAccessory, jsonTypeAccessory));
+            dataHandler.setAccessories(gson.fromJson(sendMessageAndAcceptResponseRMQAccessory.getAnswer(), jsonTypeAccessory));
 
-            ServerRMQ serverRMQ = new ServerRMQ(dataHandler.outerWears,dataHandler.caps,dataHandler.underWears,dataHandler.footWears,dataHandler.accessories);
-            serverRMQ.open();
+
+            AcceptMessageAndSendReplyRMQ acceptMessageAndSendReplyRMQ = new AcceptMessageAndSendReplyRMQ(dataHandler.connectionFactory,
+                    "weatherInformationHandler", new WeatherInformationParserJsonAndAnswerRMQ(
+                    dataHandler.connectionFactory,"weatherInformation",dataHandler.outerWears, dataHandler.caps,
+                    dataHandler.underWears, dataHandler.footWears,dataHandler.accessories)
+            );
+            acceptMessageAndSendReplyRMQ.start();
 
         } catch (TimeoutException e) {
             e.printStackTrace();
@@ -90,36 +100,9 @@ public class DataHandler implements AutoCloseable{
             e.printStackTrace();
         }
     }
-    //
-    public String call(String message, String requestQueueName) throws IOException, InterruptedException {
-        final String corrId = UUID.randomUUID().toString();
-
-        String replyQueueName = channel.queueDeclare().getQueue();
-        AMQP.BasicProperties props = new AMQP.BasicProperties
-                .Builder()
-                .correlationId(corrId)
-                .replyTo(replyQueueName)
-                .build();
-
-        channel.basicPublish("", requestQueueName, props, message.getBytes("UTF-8"));
-
-        final BlockingQueue<String> response = new ArrayBlockingQueue<>(1);
-
-        String ctag = channel.basicConsume(replyQueueName, true, (consumerTag, delivery) -> {
-            if (delivery.getProperties().getCorrelationId().equals(corrId)) {
-                response.offer(new String(delivery.getBody(), "UTF-8"));
-            }
-        }, consumerTag -> {
-        });
-
-        String result = response.take();
-        channel.basicCancel(ctag);
-        return result;
-    }
 
     @Override
     public void close() throws Exception {
-        connection.close();
     }
 
 
