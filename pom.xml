@@ -32,5 +32,6 @@
         <module>MicroserviceForWorkingWithDB</module>
         <module>WeatherGenerator</module>
         <module>DataHandler</module>
+        <module>DataAnalysisForCustomer</module>
     </modules>
 </project>
