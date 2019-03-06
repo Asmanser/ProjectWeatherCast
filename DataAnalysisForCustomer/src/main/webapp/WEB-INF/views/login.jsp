@@ -21,14 +21,14 @@
 
 <div class="login-form">
 
-    <form method="POST" action="/login" class="form-signin">
+    <form method="POST" action="${contextPath}/login" class="form-signin">
         <h2 class="form-heading">Log in</h2>
 
         <div class="form-group">
 
             <div class="form-group">
                 <label for="username">Username</label>
-                <input id="username" name="username" type="text" class="form-control" placeholder="Username"
+                <input id="username" name="username" type="text" class="form-control" placeholder="Login"
                        autofocus="true"  aria-describedby="usernameHelp" required/>
                 <small id="usernameHelp" class="form-text text-muted"> Enter Login</small>
             </div>

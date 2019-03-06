@@ -47,6 +47,9 @@ public class RabbitMQServerImpl implements RabbitMQServer {
     @Autowired
     private UnderWearParserJsonAndAnswerRMQ underWearParserJsonAndAnswerRMQ;
 
+    @Autowired
+    private RoleParserJsonAndAnswerRMQ roleParserJsonAndAnswerRMQ;
+
     @PostConstruct
     private void init() {
         connectionFactory.setHost("localhost");
@@ -97,6 +100,10 @@ public class RabbitMQServerImpl implements RabbitMQServer {
         AcceptMessageAndSendReplyRMQ acceptMessageAndSendReplyRMQUser = new AcceptMessageAndSendReplyRMQ(
                 connectionFactory,"user",userParserJsonAndAnswerRMQ);
         acceptMessageAndSendReplyRMQUser.start();
+
+        AcceptMessageAndSendReplyRMQ acceptMessageAndSendReplyRMQRole = new AcceptMessageAndSendReplyRMQ(
+                connectionFactory,"role",roleParserJsonAndAnswerRMQ);
+        acceptMessageAndSendReplyRMQRole.start();
     }
 
 }

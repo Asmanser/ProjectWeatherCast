@@ -1,6 +1,8 @@
 package by.andersen.training.weathercast.config;
 
+import by.andersen.training.weathercast.services.implementation.SecurityServiceImpl;
 import by.andersen.training.weathercast.services.implementation.UserDetailsServiceImpl;
+import by.andersen.training.weathercast.services.interfaces.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -32,15 +34,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").permitAll()
                 .antMatchers("/registration").permitAll()
                 .antMatchers("/resources/**").permitAll()
-                /*.antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/receiver/**").hasRole("MANAGER")*/
-                .antMatchers("/**").hasAnyRole("ADMIN", "USER", "MANAGER")
+                .antMatchers("/**").hasAnyRole("USER", "ADMIN")
                 .and().formLogin()
                 .loginPage("/login")
-                .failureUrl("/login?error=true")
-                .successForwardUrl("/")
                 .passwordParameter("password")
                 .usernameParameter("username")
+                .failureUrl("/login?error=true")
+                .successForwardUrl("/")
                 .permitAll()
                 .and().logout().logoutSuccessUrl("/login?logout=true").permitAll();
     }
@@ -64,4 +64,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public UserDetailsServiceImpl userDetailsService() {
         return new UserDetailsServiceImpl();
     }
+
+    @Bean
+    public SecurityService securityService() {
+        return new SecurityServiceImpl(authenticationProvider(),userDetailsService());
+    }
+
 }

@@ -63,9 +63,14 @@ public class UserParserJsonAndAnswerRMQ implements ParserJsonAndAnswerRMQ {
             }
             case "GETBYLOGIN": {
                 User findUser = userService.findByLogin(user.getLogin());
-                findUser.setRoles(null);
-                findUser.setPersonalInformation(null);
-                return gson.toJson(findUser);
+                if(findUser!=null) {
+                    findUser.setPersonalInformation(null);
+                    for(Role role : findUser.getRoles()) {
+                        role.setUsers(null);
+                    }
+                    return gson.toJson(findUser);
+                }
+                return "false";
             }
             case "GETBYLAZYID": {
                 User findUser = userService.findWithAllLazyById(user.getId());

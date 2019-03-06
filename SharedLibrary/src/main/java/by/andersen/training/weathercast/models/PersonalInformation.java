@@ -34,7 +34,7 @@ public class PersonalInformation {
     @Column(length = 100, nullable = false)
     private String email;
 
-    @ManyToOne(cascade= CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id_city")
     private City city;
 

@@ -4,6 +4,7 @@ import by.andersen.training.weathercast.models.Role;
 import by.andersen.training.weathercast.models.User;
 import by.andersen.training.weathercast.models.rabbitmq.UserRMQ;
 import by.andersen.training.weathercast.rmq.SendMessageAndAcceptResponseRMQ;
+import by.andersen.training.weathercast.services.interfaces.UserService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,30 +24,26 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private Gson gson;
 
-    public UserDetailsServiceImpl() {    }
+    @Autowired
+    private UserService userService;
+
+    public UserDetailsServiceImpl() { }
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        sendMessageAndAcceptResponseRMQ.setRPC_Queue_Name("user");
-        User login = new User();
-        login.setLogin("s");
-        sendMessageAndAcceptResponseRMQ.setMessage(gson.toJson(new UserRMQ("GETBYLOGIN",login)));
-        Thread thread = new Thread(sendMessageAndAcceptResponseRMQ);
-        thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
-        User user = gson.fromJson(sendMessageAndAcceptResponseRMQ.getAnswer(),User.class);
+        User user = userService.getByLogin(s);
+
+        if(user == null) {
+            throw new UsernameNotFoundException("Login " + s + "doesn't found!");
+        }
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 
         for(Role role : user.getRoles()){
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getRoleName()));
         }
-
-        return new org.springframework.security.core.userdetails.User(user.getLogin(),user.getPassword(),grantedAuthorities);
+        org.springframework.security.core.userdetails.User springUser = new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(), grantedAuthorities);
+        return springUser;
     }
 }

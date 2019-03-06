@@ -27,7 +27,7 @@ public class City {
     @OneToMany(mappedBy="city", fetch=FetchType.LAZY)
     private List<PersonalInformation> personalInformations;
 
-    @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="id_country")
     private Country country;
 

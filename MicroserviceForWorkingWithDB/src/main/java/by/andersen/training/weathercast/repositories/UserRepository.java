@@ -18,6 +18,8 @@ public interface UserRepository extends CrudRepository<User,Long> {
             "personalInformation.city.country"})
     Optional<User> findLazyById(Long id);
 
+
+    @EntityGraph(attributePaths = {"roles"})
     Optional<User> findByLogin(String login);
 
 }

@@ -9,14 +9,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
-@Service
 public class SecurityServiceImpl implements SecurityService {
 
-    @Autowired
     private AuthenticationProvider authenticationProvider;
 
-    @Autowired
     private UserDetailsService userDetailsService;
+
+    public SecurityServiceImpl(AuthenticationProvider authenticationProvider, UserDetailsService userDetailsService) {
+        this.authenticationProvider = authenticationProvider;
+        this.userDetailsService = userDetailsService;
+    }
 
     @Override
     public String findLoggedInUsername() {

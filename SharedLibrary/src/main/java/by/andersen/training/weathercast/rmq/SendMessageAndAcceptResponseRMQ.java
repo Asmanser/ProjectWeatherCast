@@ -82,6 +82,10 @@ public class SendMessageAndAcceptResponseRMQ extends Thread {
         return answer;
     }
 
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
     public void setMessage(String message) {
         this.message = message;
     }
