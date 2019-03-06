@@ -63,8 +63,10 @@ public class UserParserJsonAndAnswerRMQ implements ParserJsonAndAnswerRMQ {
             }
             case "GETBYLOGIN": {
                 User findUser = userService.findByLogin(user.getLogin());
+                findUser.getPersonalInformation().getCity().setPersonalInformations(null);
+                findUser.getPersonalInformation().getCity().setWeatherInformations(null);
+                findUser.getPersonalInformation().getCity().getCountry().setCities(null);
                 if(findUser!=null) {
-                    findUser.setPersonalInformation(null);
                     for(Role role : findUser.getRoles()) {
                         role.setUsers(null);
                     }

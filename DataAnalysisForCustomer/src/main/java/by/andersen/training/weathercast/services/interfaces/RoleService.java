@@ -8,4 +8,6 @@ public interface RoleService {
 
     public List<Role> getAllRole() throws InterruptedException;
 
+    public Role getById(long id) throws InterruptedException;
+
 }

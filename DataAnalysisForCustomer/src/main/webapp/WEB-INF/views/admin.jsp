@@ -1,11 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: Alex
-  Date: 06.03.2019
-  Time: 14:03
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -55,8 +49,46 @@
             <th scope="col">Admin</th>
             <th scope="col">Delete</th>
         </tr>
-        <c:forEach>
-
+        <c:forEach var="user" items="${users}">
+            <tr>
+                <td>${user.login}</td>
+                <td>${user.personalInformation.name}</td>
+                <td>${user.personalInformation.surname}</td>
+                <td>${user.personalInformation.patronymic}</td>
+                <td>${user.personalInformation.age}</td>
+                <td>${user.personalInformation.email}</td>
+                <td>${user.personalInformation.city.cityName}</td>
+                <td>
+                <c:set var="flag" scope="request" value="false"></c:set>
+                <c:forEach var="role" items="${user.roles}">
+                    <c:if test="${role.roleName.equals('ROLE_ADMIN')}">
+                        <c:set var="flag" scope="request" value="true"></c:set>
+                        <form action="/admin/role" method="post">
+                            <input type="hidden" name="login" value="${user.login}">
+                            <input type="hidden" name="_method" value="delete">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <input type="submit" class="btn btn-danger" value="Delete Role Admin">
+                        </form>
+                    </c:if>
+                </c:forEach>
+                <c:if test="${flag == false}">
+                    <form action="/admin/role" method="post">
+                        <input type="hidden" name="login" value="${user.login}">
+                        <input type="hidden" name="_method" value="post">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <input type="submit" class="btn btn-success" value="Add Role Admin">
+                    </form>
+                </c:if>
+                </td>
+                <td>
+                    <form action="/admin/user" method="post">
+                        <input type="hidden" name="id" value="${user.id}">
+                        <input type="hidden" name="_method" value="delete">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <input type="submit" class="btn btn-danger" value="Delete User">
+                    </form>
+                </td>
+            </tr>
         </c:forEach>
         </thead>
     </table>

@@ -5,10 +5,13 @@ import by.andersen.training.weathercast.models.Role;
 import by.andersen.training.weathercast.models.User;
 import by.andersen.training.weathercast.models.rabbitmq.UserRMQ;
 import by.andersen.training.weathercast.rmq.SendMessageAndAcceptResponseRMQ;
+import by.andersen.training.weathercast.services.interfaces.RoleService;
 import by.andersen.training.weathercast.services.interfaces.UserService;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,15 +25,22 @@ public class UserServiceImpl implements UserService {
 
     private String GET_ALL_WITH_LAZY = "GETALLWITHLAZY";
 
+    private String DELETE = "DELETE";
+
     private String QUEUE_NAME = "user";
+
+    private int ID_ROLE_ADMIN = 1;
 
     private SendMessageAndAcceptResponseRMQ sendMessageAndAcceptResponseRMQ;
 
     private Gson gson;
 
-    public UserServiceImpl(SendMessageAndAcceptResponseRMQ sendMessageAndAcceptResponseRMQ, Gson gson) {
+    private RoleService roleService;
+
+    public UserServiceImpl(SendMessageAndAcceptResponseRMQ sendMessageAndAcceptResponseRMQ, Gson gson, RoleService roleService) {
         this.sendMessageAndAcceptResponseRMQ = sendMessageAndAcceptResponseRMQ;
         this.gson = gson;
+        this.roleService = roleService;
     }
 
     @Override
@@ -81,15 +91,47 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllLazyUser() throws InterruptedException {
+    public List<User> getAllLazy() throws InterruptedException {
         sendMessageAndAcceptResponseRMQ.setRPC_Queue_Name(QUEUE_NAME);
         sendMessageAndAcceptResponseRMQ.setMessage(gson.toJson(new UserRMQ(GET_ALL_WITH_LAZY,new User())));
         Thread thread = new Thread(sendMessageAndAcceptResponseRMQ);
         thread.start();
         thread.join();
 
+        Type jsonTypeUser = new TypeToken<ArrayList<User>>(){}.getType();
+        return gson.fromJson(sendMessageAndAcceptResponseRMQ.getAnswer(), jsonTypeUser);
+    }
 
+    @Override
+    public boolean delete(int id) throws InterruptedException {
+        sendMessageAndAcceptResponseRMQ.setRPC_Queue_Name(QUEUE_NAME);
+        User user = new User();
+        user.setId((long)id);
+        sendMessageAndAcceptResponseRMQ.setMessage(gson.toJson(new UserRMQ(DELETE,user)));
+        Thread thread = new Thread(sendMessageAndAcceptResponseRMQ);
+        thread.start();
+        thread.join();
+        return Boolean.valueOf(sendMessageAndAcceptResponseRMQ.getAnswer());
+    }
 
-        return null;
+    @Override
+    public void addRole(String login) throws InterruptedException {
+        User user = getByLogin(login);
+        user.getRoles().add(roleService.getById(ID_ROLE_ADMIN));
+        save(user);
+    }
+
+    @Override
+    public void deleteRole(String login) throws InterruptedException {
+        User user = getByLogin(login);
+        Role role = roleService.getById(ID_ROLE_ADMIN);
+        int position = 0;
+        for(int i = 0; i < user.getRoles().size(); i++) {
+            if(role.getRoleName().equals(user.getRoles().get(i).getRoleName())) {
+                position = i;
+            }
+        }
+        user.getRoles().remove(position);
+        save(user);
     }
 }

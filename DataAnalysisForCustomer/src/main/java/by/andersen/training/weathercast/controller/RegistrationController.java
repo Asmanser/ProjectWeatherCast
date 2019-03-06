@@ -24,7 +24,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +70,7 @@ public class RegistrationController {
     }*/
 
     @RequestMapping(value = "/registration",method = RequestMethod.GET)
-    public String registration(Model model) throws InterruptedException {
+    public String registration(Model model, HttpServletResponse response) throws InterruptedException {
         User user = new User();
         user.setPersonalInformation(new PersonalInformation());
         user.getPersonalInformation().setCity(new City());
@@ -74,14 +79,16 @@ public class RegistrationController {
         this.cities = cityService.getAllCity();
 
         this.roles = roleService.getAllRole();
-
+        response.setCharacterEncoding("UTF-8");
         model.addAttribute("cities",cities);
         return "registration";
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(@ModelAttribute("userForm") User userForm, Model model) throws InterruptedException {
-
+    public String registration(@ModelAttribute("userForm") User userForm, Model model,
+                               HttpServletRequest request,HttpServletResponse response) throws InterruptedException, UnsupportedEncodingException {
+        request.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.setCharacterEncoding("UTF-8");
         by.andersen.training.weathercast.models.User findUser = userService.getByLogin(userForm.getLogin());
 
         try {

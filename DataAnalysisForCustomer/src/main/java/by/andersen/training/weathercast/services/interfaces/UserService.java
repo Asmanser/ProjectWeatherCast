@@ -14,6 +14,12 @@ public interface UserService {
 
     public void addInformationNewUser(User user, List<City> cities, List<Role> roles);
 
-    public List<User> getAllLazyUser() throws InterruptedException;
+    public List<User> getAllLazy() throws InterruptedException;
+
+    public boolean delete(int id) throws InterruptedException;
+
+    public void addRole(String login) throws InterruptedException;
+
+    public void deleteRole(String login) throws InterruptedException;
 
 }

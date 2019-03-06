@@ -41,7 +41,7 @@ public class SpringConfig {
 
     @Bean
     public UserService userService() {
-        UserServiceImpl userService = new UserServiceImpl(sendRMQ(),gson());
+        UserServiceImpl userService = new UserServiceImpl(sendRMQ(),gson(), roleService());
         return userService;
     }
 

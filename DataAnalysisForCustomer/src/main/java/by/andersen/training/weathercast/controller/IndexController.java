@@ -9,6 +9,7 @@ public class IndexController {
 
     @RequestMapping(value = "/")
     public String index(Model model){
+
         return "index";
     }
 

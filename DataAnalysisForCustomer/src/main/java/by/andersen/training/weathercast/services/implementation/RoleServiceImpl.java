@@ -15,6 +15,8 @@ public class RoleServiceImpl implements RoleService {
 
     private String QUEUE_NAME = "role";
 
+    private String GET_BY_ID = "GETBYID";
+
     private String GET_ALL = "GETALL";
 
     private SendMessageAndAcceptResponseRMQ sendMessageAndAcceptResponseRMQ;
@@ -37,5 +39,18 @@ public class RoleServiceImpl implements RoleService {
         Type jsonTypeRoles = new TypeToken<ArrayList<Role>>(){}.getType();
         roles = gson.fromJson(sendMessageAndAcceptResponseRMQ.getAnswer(), jsonTypeRoles);
         return roles;
+    }
+
+    @Override
+    public Role getById(long id) throws InterruptedException {
+        sendMessageAndAcceptResponseRMQ.setRPC_Queue_Name(QUEUE_NAME);
+        Role role = new Role();
+        role.setId(id);
+        sendMessageAndAcceptResponseRMQ.setMessage(gson.toJson(new RoleRMQ(GET_BY_ID,role)));
+        Thread thread2 = new Thread(sendMessageAndAcceptResponseRMQ);
+        thread2.start();
+        thread2.join();
+        Role answer = gson.fromJson(sendMessageAndAcceptResponseRMQ.getAnswer(), Role.class);
+        return answer;
     }
 }

@@ -19,7 +19,8 @@ public interface UserRepository extends CrudRepository<User,Long> {
     Optional<User> findLazyById(Long id);
 
 
-    @EntityGraph(attributePaths = {"roles"})
+    @EntityGraph(attributePaths = {"personalInformation", "roles","personalInformation.city",
+            "personalInformation.city.country"})
     Optional<User> findByLogin(String login);
 
 }
