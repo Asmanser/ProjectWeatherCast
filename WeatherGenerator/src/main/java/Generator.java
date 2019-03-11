@@ -91,10 +91,10 @@ public class Generator implements AutoCloseable{
         while(true) {
             for(City city : this.cities) {
                 WeatherInformation weatherInformation = new WeatherInformation();
-                weatherInformation.setMinAirTemperature((int)(Math.random() * ((50 - (-20)) + 1)));
+                weatherInformation.setMinAirTemperature(-20 + (int)(Math.random() * 55));
                 weatherInformation.setMaxAirTemperature(weatherInformation.getMinAirTemperature() + 2);
                 weatherInformation.setWindSpeed((int)(Math.random() * ((10 - 0) + 1)));
-                weatherInformation.setAtmospherePressure((int)(Math.random() * ((770 - 750) + 1)));
+                weatherInformation.setAtmospherePressure(750 + (int)(Math.random() * 20));
                 weatherInformation.setAirHumidity((int)(Math.random() * ((100 - 0) + 1)));
                 weatherInformation.setDate(Date.valueOf(localDate.toString()));
                 weatherInformation.setCity(city);

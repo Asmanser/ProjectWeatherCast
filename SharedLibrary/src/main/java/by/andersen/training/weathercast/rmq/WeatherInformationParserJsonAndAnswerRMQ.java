@@ -67,27 +67,27 @@ public class WeatherInformationParserJsonAndAnswerRMQ implements ParserJsonAndAn
     }
 
     private void addAccessory(WeatherInformation weatherInformation) {
-        if (weatherInformation.getWeatherCondition().getNameWeatherConditions().equals("Дождь")) {
+        if (weatherInformation.getWeatherCondition().getNameWeatherConditions().equals("Rain")) {
             for(Accessory accessory : accessories) {
-                if(accessory.getNameAccessory().equals("Зонт")) {
+                if(accessory.getNameAccessory().equals("Umbrella")) {
                     weatherInformation.getWeatherClothing().setAccessory(accessory);
                     break;
                 }
             }
         } else {
-            if (weatherInformation.getWeatherCondition().getNameWeatherConditions().equals("Шторм") || weatherInformation.getWeatherCondition().getNameWeatherConditions().equals("Дождь с грозой")) {
+            if (weatherInformation.getWeatherCondition().getNameWeatherConditions().equals("Storm") || weatherInformation.getWeatherCondition().getNameWeatherConditions().equals("Thunderstorm")) {
                 for (Accessory accessory : accessories) {
-                    if (accessory.getNameAccessory().equals("Плащ")) {
+                    if (accessory.getNameAccessory().equals("Cloak")) {
                         weatherInformation.getWeatherClothing().setAccessory(accessory);
                         break;
                     }
                 }
             } else {
-                if(weatherInformation.getMinAirTemperature() > 20 && (weatherInformation.getOvercast().getNameOvercast().equals("Ясно") ||
-                        weatherInformation.getOvercast().getNameOvercast().equals("Нет существенной облачности") ||
-                        weatherInformation.getOvercast().getNameOvercast().equals("Нет облаков ниже 3000 м"))) {
+                if(weatherInformation.getMinAirTemperature() > 20 && (weatherInformation.getOvercast().getNameOvercast().equals("Clear") ||
+                        weatherInformation.getOvercast().getNameOvercast().equals("No significant clouds") ||
+                        weatherInformation.getOvercast().getNameOvercast().equals("No clouds below 3000 m"))) {
                     for (Accessory accessory : accessories) {
-                        if (accessory.getNameAccessory().equals("Солнцезащитные очки")) {
+                        if (accessory.getNameAccessory().equals("Sunglasses")) {
                             weatherInformation.getWeatherClothing().setAccessory(accessory);
                             break;
                         }
@@ -100,7 +100,7 @@ public class WeatherInformationParserJsonAndAnswerRMQ implements ParserJsonAndAn
     private void addFootWear(WeatherInformation weatherInformation) {
         if(weatherInformation.getMinAirTemperature() < 3 ) {
             for(FootWear footWear : footWears) {
-                if(footWear.getNameFootWear().equals("Сапоги")) {
+                if(footWear.getNameFootWear().equals("Boots")) {
                     weatherInformation.getWeatherClothing().setFootWear(footWear);
                     break;
                 }
@@ -108,7 +108,7 @@ public class WeatherInformationParserJsonAndAnswerRMQ implements ParserJsonAndAn
         } else {
             if(weatherInformation.getMinAirTemperature() >= 3 && weatherInformation.getMinAirTemperature() < 11) {
                 for(FootWear footWear : footWears) {
-                    if(footWear.getNameFootWear().equals("Туфли")) {
+                    if(footWear.getNameFootWear().equals("Shoes")) {
                         weatherInformation.getWeatherClothing().setFootWear(footWear);
                         break;
                     }
@@ -116,7 +116,7 @@ public class WeatherInformationParserJsonAndAnswerRMQ implements ParserJsonAndAn
             } else {
                 if(weatherInformation.getMinAirTemperature() >= 11 && weatherInformation.getMinAirTemperature() < 21) {
                     for(FootWear footWear : footWears) {
-                        if(footWear.getNameFootWear().equals("Кроссовки")) {
+                        if(footWear.getNameFootWear().equals("Sneakers")) {
                             weatherInformation.getWeatherClothing().setFootWear(footWear);
                             break;
                         }
@@ -124,7 +124,7 @@ public class WeatherInformationParserJsonAndAnswerRMQ implements ParserJsonAndAn
                 } else {
                     if(weatherInformation.getMinAirTemperature() > 21) {
                         for(FootWear footWear : footWears) {
-                            if(footWear.getNameFootWear().equals("Сланцы")) {
+                            if(footWear.getNameFootWear().equals("Slates")) {
                                 weatherInformation.getWeatherClothing().setFootWear(footWear);
                                 break;
                             }
@@ -138,7 +138,7 @@ public class WeatherInformationParserJsonAndAnswerRMQ implements ParserJsonAndAn
     private void addUnderWear(WeatherInformation weatherInformation) {
         if(weatherInformation.getMinAirTemperature() < 3 ) {
             for(UnderWear underWear : underWears) {
-                if(underWear.getNameUnderWear().equals("Теплые штаны")) {
+                if(underWear.getNameUnderWear().equals("Warm pants")) {
                     weatherInformation.getWeatherClothing().setUnderWear(underWear);
                     break;
                 }
@@ -146,7 +146,7 @@ public class WeatherInformationParserJsonAndAnswerRMQ implements ParserJsonAndAn
         } else {
             if(weatherInformation.getMinAirTemperature() >= 3 && weatherInformation.getMinAirTemperature() < 21) {
                 for(UnderWear underWear : underWears) {
-                    if(underWear.getNameUnderWear().equals("Джинсы")) {
+                    if(underWear.getNameUnderWear().equals("Jeans")) {
                         weatherInformation.getWeatherClothing().setUnderWear(underWear);
                         break;
                     }
@@ -154,7 +154,7 @@ public class WeatherInformationParserJsonAndAnswerRMQ implements ParserJsonAndAn
             } else {
                 if(weatherInformation.getMinAirTemperature() > 21) {
                     for(UnderWear underWear : underWears) {
-                        if(underWear.getNameUnderWear().equals("Шорты")) {
+                        if(underWear.getNameUnderWear().equals("Shorts")) {
                             weatherInformation.getWeatherClothing().setUnderWear(underWear);
                             break;
                         }
@@ -167,7 +167,7 @@ public class WeatherInformationParserJsonAndAnswerRMQ implements ParserJsonAndAn
     private void addOuterWear(WeatherInformation weatherInformation) {
         if(weatherInformation.getMinAirTemperature() < 3 ) {
             for(OuterWear outerWear : outerWears) {
-                if(outerWear.getNameOuterWear().equals("Зимняя куртка")) {
+                if(outerWear.getNameOuterWear().equals("Winter Jacket")) {
                     weatherInformation.getWeatherClothing().setOuterWear(outerWear);
                     break;
                 }
@@ -175,7 +175,7 @@ public class WeatherInformationParserJsonAndAnswerRMQ implements ParserJsonAndAn
         } else {
             if(weatherInformation.getMinAirTemperature() >= 3 && weatherInformation.getMinAirTemperature() < 11) {
                 for(OuterWear outerWear : outerWears) {
-                    if(outerWear.getNameOuterWear().equals("Ветровка")) {
+                    if(outerWear.getNameOuterWear().equals("Windbreaker")) {
                         weatherInformation.getWeatherClothing().setOuterWear(outerWear);
                         break;
                     }
@@ -183,7 +183,7 @@ public class WeatherInformationParserJsonAndAnswerRMQ implements ParserJsonAndAn
             } else {
                 if(weatherInformation.getMinAirTemperature() >= 11 && weatherInformation.getMinAirTemperature() < 21) {
                     for(OuterWear outerWear : outerWears) {
-                        if(outerWear.getNameOuterWear().equals("Байка")) {
+                        if(outerWear.getNameOuterWear().equals("Bike")) {
                             weatherInformation.getWeatherClothing().setOuterWear(outerWear);
                             break;
                         }
@@ -191,7 +191,7 @@ public class WeatherInformationParserJsonAndAnswerRMQ implements ParserJsonAndAn
                 } else {
                     if(weatherInformation.getMinAirTemperature() > 21) {
                         for(OuterWear outerWear : outerWears) {
-                            if(outerWear.getNameOuterWear().equals("Майка")) {
+                            if(outerWear.getNameOuterWear().equals("Mike")) {
                                 weatherInformation.getWeatherClothing().setOuterWear(outerWear);
                                 break;
                             }
@@ -205,17 +205,17 @@ public class WeatherInformationParserJsonAndAnswerRMQ implements ParserJsonAndAn
     private void addCap(WeatherInformation weatherInformation) {
         if(weatherInformation.getMinAirTemperature() < 3 ) {
             for(Cap cap : caps) {
-                if(cap.getNameCap().equals("Теплая шапка")) {
+                if(cap.getNameCap().equals("Warm hat")) {
                     weatherInformation.getWeatherClothing().setCap(cap);
                     break;
                 }
             }
         } else {
-            if(weatherInformation.getMinAirTemperature() > 20 && (weatherInformation.getOvercast().getNameOvercast().equals("Ясно") ||
-                    weatherInformation.getOvercast().getNameOvercast().equals("Нет существенной облачности") ||
-                    weatherInformation.getOvercast().getNameOvercast().equals("Нет облаков ниже 3000 м"))) {
+            if(weatherInformation.getMinAirTemperature() > 20 && (weatherInformation.getOvercast().getNameOvercast().equals("Clear") ||
+                    weatherInformation.getOvercast().getNameOvercast().equals("No significant clouds") ||
+                    weatherInformation.getOvercast().getNameOvercast().equals("No clouds below 3000 m"))) {
                 for(Cap cap : caps) {
-                    if(cap.getNameCap().equals("Кепка")) {
+                    if(cap.getNameCap().equals("Cap")) {
                         weatherInformation.getWeatherClothing().setCap(cap);
                         break;
                     }

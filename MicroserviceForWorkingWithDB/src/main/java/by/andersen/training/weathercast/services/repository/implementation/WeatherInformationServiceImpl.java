@@ -1,5 +1,6 @@
 package by.andersen.training.weathercast.services.repository.implementation;
 
+import by.andersen.training.weathercast.models.City;
 import by.andersen.training.weathercast.models.WeatherInformation;
 import by.andersen.training.weathercast.repositories.WeatherInformationRepository;
 import by.andersen.training.weathercast.services.repository.interfaces.WeatherInformationService;
@@ -7,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WeatherInformationServiceImpl implements WeatherInformationService {
@@ -77,5 +80,23 @@ public class WeatherInformationServiceImpl implements WeatherInformationService 
     @Override
     public WeatherInformation findWithAllLazyById(Long id) {
         return weatherInformationRepository.findLazyById(id).get();
+    }
+
+    @Override
+    public List<WeatherInformation> findLazyByDate(Date date) {
+        List<WeatherInformation> weatherInformations = new ArrayList<>();
+        for(WeatherInformation weatherInformation: weatherInformationRepository.findLazyByDate(date)) {
+            weatherInformations.add(weatherInformation);
+        }
+        return weatherInformations;
+    }
+
+    @Override
+    public WeatherInformation findLazyByDateAndCity(Date date, City city) {
+        Optional<WeatherInformation> lazyByDateAndCity = weatherInformationRepository.findLazyByDateAndCity(date, city);
+        if(lazyByDateAndCity.isPresent()) {
+            return lazyByDateAndCity.get();
+        }
+        return null;
     }
 }

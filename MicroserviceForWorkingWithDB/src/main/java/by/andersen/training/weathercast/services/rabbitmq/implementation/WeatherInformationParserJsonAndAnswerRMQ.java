@@ -1,9 +1,11 @@
 package by.andersen.training.weathercast.services.rabbitmq.implementation;
 
+import by.andersen.training.weathercast.models.City;
 import by.andersen.training.weathercast.models.WeatherClothing;
 import by.andersen.training.weathercast.models.WeatherInformation;
 import by.andersen.training.weathercast.models.rabbitmq.WeatherInformationRMQ;
 import by.andersen.training.weathercast.rmq.ParserJsonAndAnswerRMQ;
+import by.andersen.training.weathercast.services.repository.interfaces.CityService;
 import by.andersen.training.weathercast.services.repository.interfaces.WeatherInformationService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,9 @@ public class WeatherInformationParserJsonAndAnswerRMQ implements ParserJsonAndAn
 
     @Autowired
     private WeatherInformationService weatherInformationService;
+
+    @Autowired
+    private CityService cityService;
 
     private Gson gson = new Gson();
 
@@ -84,7 +89,7 @@ public class WeatherInformationParserJsonAndAnswerRMQ implements ParserJsonAndAn
                 weatherClothing.getCap().setWeatherClothingList(null);
                 weatherClothing.getFootWear().setWeatherClothingList(null);
                 weatherClothing.getOuterWear().setWeatherClothings(null);
-                weatherClothing.getOuterWear().setWeatherClothings(null);
+                weatherClothing.getUnderWear().setWeatherClothings(null);
                 weatherClothing.setWeatherInformations(null);
                 return gson.toJson(findWeatherInformation);
             }
@@ -98,6 +103,54 @@ public class WeatherInformationParserJsonAndAnswerRMQ implements ParserJsonAndAn
                     currentWeatherInformation.setWeatherCondition(null);
                 }
                 return gson.toJson(weatherInformations);
+            }
+            case "GETBYDATE": {
+                List<WeatherInformation> findWeatherInformations = weatherInformationService.findLazyByDate(weatherInformation.getDate());
+                for(WeatherInformation findWeatherInformation : findWeatherInformations) {
+                    findWeatherInformation.getCity().setPersonalInformations(null);
+                    findWeatherInformation.getCity().setWeatherInformations(null);
+                    findWeatherInformation.getCity().getCountry().setCities(null);
+                    findWeatherInformation.getOvercast().setWeatherInformations(null);
+                    findWeatherInformation.getWeatherCondition().setWeatherInformations(null);
+                    findWeatherInformation.getDirectionWind().setWeatherInformations(null);
+                    WeatherClothing weatherClothing = findWeatherInformation.getWeatherClothing();
+                    if(weatherClothing.getAccessory()!= null) {
+                        weatherClothing.getAccessory().setWeatherClothings(null);
+                    }
+                    if(weatherClothing.getCap() != null) {
+                        weatherClothing.getCap().setWeatherClothingList(null);
+                    }
+                    weatherClothing.getFootWear().setWeatherClothingList(null);
+                    weatherClothing.getOuterWear().setWeatherClothings(null);
+                    weatherClothing.getUnderWear().setWeatherClothings(null);
+                    weatherClothing.setWeatherInformations(null);
+                }
+                return gson.toJson(findWeatherInformations);
+            }
+            case "GETBYDATEANDCITY": {
+                City city = cityService.findWithAllLazyById(weatherInformation.getCity().getId());
+                WeatherInformation findWeatherInformation = weatherInformationService.findLazyByDateAndCity(weatherInformation.getDate(), city);
+                if(findWeatherInformation == null) {
+                    return "false";
+                }
+                findWeatherInformation.getCity().setPersonalInformations(null);
+                findWeatherInformation.getCity().setWeatherInformations(null);
+                findWeatherInformation.getCity().getCountry().setCities(null);
+                findWeatherInformation.getOvercast().setWeatherInformations(null);
+                findWeatherInformation.getWeatherCondition().setWeatherInformations(null);
+                findWeatherInformation.getDirectionWind().setWeatherInformations(null);
+                WeatherClothing weatherClothing = findWeatherInformation.getWeatherClothing();
+                if(weatherClothing.getAccessory()!= null) {
+                    weatherClothing.getAccessory().setWeatherClothings(null);
+                }
+                if(weatherClothing.getCap() != null) {
+                    weatherClothing.getCap().setWeatherClothingList(null);
+                }
+                weatherClothing.getFootWear().setWeatherClothingList(null);
+                weatherClothing.getOuterWear().setWeatherClothings(null);
+                weatherClothing.getUnderWear().setWeatherClothings(null);
+                weatherClothing.setWeatherInformations(null);
+                return gson.toJson(findWeatherInformation);
             }
         }
         return answer;

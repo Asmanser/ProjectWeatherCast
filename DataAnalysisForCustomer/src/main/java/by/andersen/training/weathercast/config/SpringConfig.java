@@ -4,9 +4,11 @@ import by.andersen.training.weathercast.rmq.SendMessageAndAcceptResponseRMQ;
 import by.andersen.training.weathercast.services.implementation.CityServiceImpl;
 import by.andersen.training.weathercast.services.implementation.RoleServiceImpl;
 import by.andersen.training.weathercast.services.implementation.UserServiceImpl;
+import by.andersen.training.weathercast.services.implementation.WeatherInformationServiceImpl;
 import by.andersen.training.weathercast.services.interfaces.CityService;
 import by.andersen.training.weathercast.services.interfaces.RoleService;
 import by.andersen.training.weathercast.services.interfaces.UserService;
+import by.andersen.training.weathercast.services.interfaces.WeatherInformationService;
 import com.google.gson.Gson;
 import com.rabbitmq.client.ConnectionFactory;
 import org.springframework.context.annotation.Bean;
@@ -54,6 +56,11 @@ public class SpringConfig {
     @Bean
     public RoleService roleService() {
         return new RoleServiceImpl(sendRMQ(),gson());
+    }
+
+    @Bean
+    public WeatherInformationService weatherInformationService() {
+        return new WeatherInformationServiceImpl(sendRMQ(),gson(),userService());
     }
 
 }
